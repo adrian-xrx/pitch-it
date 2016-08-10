@@ -1,0 +1,47 @@
+@import (reference) "../../less/common/colors.less";
+
+.login-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @primary_background;
+  
+  .label-username {
+    position: absolute;
+    left: 250px;
+    top: 270px;
+    color: @primary;
+    line-height: 20px;
+  }
+  
+  .field-username {
+    background: @primary_background;
+    border: 1px solid @primary;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    color: @white;
+    padding: 0 5px 0 5px;
+    
+    &:focus {
+      outline: 1px solid @primary;
+    }
+  }
+  
+  .submit {
+    position: absolute;
+    top: 290px;
+    left: 455px;
+    border-top: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid @primary;
+    cursor: pointer;
+    
+    &:hover {
+      border-left-color: @primary_hover;
+    }
+  }
+}
