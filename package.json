@@ -1,7 +1,7 @@
 {
   "name": "pitch-it",
   "version": "0.8.0",
-  "description": "WebRTC based chat application",
+  "description": "WebRTC based communication tool",
   "private": true,
   "license": "BSD",
   "scripts": {
