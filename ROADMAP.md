@@ -1,10 +1,9 @@
 # 0.9.0
-  - [] Add HTTPS support
-  - [] Hang-up
-  - [] Clear draw area
-  - [] Upload images
+[ ] Add HTTPS support
+[ ] Hang-up
+[ ] Clear draw area
 
-  - [] Split asset and backend server
+[ ] Split asset and backend server
   
 # Next
   - Evaluate switching to TypeScript

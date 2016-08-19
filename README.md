@@ -1,12 +1,15 @@
-# Installation
+# pitch it
+pitch it is comunication tool based on webrtc
+## Prerequesits
+To run or build pitch it you need to have nodejs and npm installed.
+## Installation
 Recommended: Download a prebuild version from the release area
 Unzip and navigate to the folder
-Execute:
 ```
 $ npm install
 ```
-to install all dependencies
-# Configuration
+Will install all dependencies (build and runtime dependencies)
+## Configuration
 Change the config.js in server/asset/config.js to use your servers.
 ```javascript
 socket: {
@@ -26,23 +29,21 @@ turn: [] // array of turn configurations
   url: 'turn:my.turn.server:1234'
 }
 ```
-# Run
-Execute
+## Run
 ```
 $ npm start
 ```
-to run the server application
+Will run the server
 
-# Development
+## Development
 
-## Build
-Execute
+### Build
 ```
 $ npm run build
 ```
-to build the software.
+Will run the build. Afterwards the binaries are available in the dist/ folder
 
-## Development Server 
+### Development Server 
 To launch the development server you need a running server instance with
 ```
 $ npm start
@@ -54,6 +55,6 @@ $ npm run dev
 to start the webpack dev server for development.
 The application will be available at localhost:8080/webpack-dev-server
 
-# License
+## License
 BSD License
-Copyright (c) 2016-present, the creators of Pitch It
+Copyright (c) 2016-present, the creators of pitch it
