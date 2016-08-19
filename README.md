@@ -57,4 +57,4 @@ The application will be available at localhost:8080/webpack-dev-server
 
 ## License
 BSD License
-Copyright (c) 2016-present, the creators of pitch it
+Copyright (c) 2016, the creators of pitch it
