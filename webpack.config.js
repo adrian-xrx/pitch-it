@@ -35,7 +35,7 @@ module.exports = {
       compress: {
         warnings: false
       },
-      preserveComments: /@preserve|@cc_on|\bMIT\b|\bMPL\b|\bGPL\b|\bBSD\b|\bISCL\b|\(c\)|License|Copyright/mi
+      comments: /@preserve|@cc_on|\bMIT\b|\bMPL\b|\bGPL\b|\bBSD\b|\bISCL\b|\(c\)|License|Copyright/mi
     }),
     new webpack.BannerPlugin(license)
   ]
