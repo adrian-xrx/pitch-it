@@ -14,9 +14,9 @@ Will install all dependencies (build and runtime dependencies)
 Create a config.json file that can be passed as cmd arg
 ```javascript
 {
-  "port": 80,
+  "port": [http port],
   "https": {
-    "port": 443,
+    "port": [https port],
     "certificate": "[cert]",
     "key": "[key]",
     "passphrase": "[passphase]" // optional
