@@ -10,6 +10,21 @@ $ npm install
 ```
 Will install all dependencies (build and runtime dependencies)
 ## Configuration
+### Server
+Create a config.json file that can be passed as cmd arg
+```javascript
+{
+  "port": 80,
+  "https": {
+    "port": 443,
+    "certificate": "[cert]",
+    "key": "[key]",
+    "passphrase": "[passphase]" // optional
+  }
+}
+```
+If you don't specify the https property. The server will run without HTTPS-Encryption
+### Client
 Change the config.js in server/asset/config.js to use your servers.
 ```javascript
 socket: {
@@ -31,9 +46,9 @@ turn: [] // array of turn configurations
 ```
 ## Run
 ```
-$ npm start
+$ npm start [config file]
 ```
-Will run the server
+Will run the server. The config file is the configuration for the server
 
 ## Development
 
