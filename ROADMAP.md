@@ -1,10 +1,10 @@
-# 0.9.0
-[ ] Add HTTPS support
-[ ] Hang-up
-[ ] Clear draw area
+# Short Term 
+  - Add HTTPS support
+  - Hang-up
+  - Clear draw area
 
-[ ] Split asset and backend server
+  - Split asset and backend server
   
-# Next
-  - Evaluate switching to TypeScript
-  - Evaluate replacement of React
+# Long Term
+  - Upload pictures
+  - Scaling
