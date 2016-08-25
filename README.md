@@ -53,6 +53,12 @@ Will run the server. The config file is the configuration for the server
 
 ## Development
 
+### Execute the Tests
+```
+$ npm test
+```
+Will run the tests with mocha
+
 ### Build
 ```
 $ npm run build
