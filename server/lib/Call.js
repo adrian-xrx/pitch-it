@@ -76,15 +76,15 @@ class Call {
     }
   }
   broadcastDraw(origin, msg) {
+    let targets = [];
     if (origin !== this._owner) {
-      this._socketManager.sendTo(this._owner, message_types.DRAW_DRAWING, {
-        data: msg.data
-      });
+      targets.push(this._owner);
     }
     let filteredParticipants = this._participants.filter((participant) => {
       return (participant !== origin);
     });
-    this._socketManager.sendTo(filteredParticipants, message_types.DRAW_DRAWING, {
+    targets = targets.concat(filteredParticipants);
+    this._socketManager.sendTo(targets, message_types.DRAW_DRAWING, {
       data: msg.data
     });
   }

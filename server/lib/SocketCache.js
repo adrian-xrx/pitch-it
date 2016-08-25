@@ -34,7 +34,7 @@ class SocketCache {
   }
   
   list() {
-    logger.debug('List connected');
+    logger.debug('List sockets in cache');
     return Object.keys(this._cache);
   }
 }
