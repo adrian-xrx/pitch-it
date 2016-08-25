@@ -1,10 +1,28 @@
 'use strict';
 class Logger {
   constructor() {
-    this._level = 0;
+    this._level = 1;
   }
   setLevel(newLevel) {
-    this._level = newLevel;
+    this._level = this._levelToInt(newLevel);
+  }
+  _levelToInt(level) {
+    var result = this._level;
+    switch(level) {
+      case 'DEBUG':
+        result = 0;
+        break;
+      case 'INFO':
+        result = 1;
+        break;
+      case 'WARN':
+        result = 2;
+        break;
+      case 'ERROR':
+        result = 3;
+        break;
+    }
+    return result;
   }
   createHeader(type) {
     var time = new Date();

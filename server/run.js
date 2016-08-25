@@ -2,6 +2,7 @@
 let Server = require('./Server');
 let pkg = require('../package.json');
 let fs = require('fs');
+let logger = require('./lib/Logger').getInstance();
 
 function validateConfig(config) {
   let retVal = true;
@@ -32,6 +33,9 @@ if (process.argv[2]) {
 }
 
 if (config) {
+  if (config.logLevel) {
+    logger.setLevel(config.logLevel);
+  }
   launch(config);
 } else {
   console.log('Please, specify a config file');

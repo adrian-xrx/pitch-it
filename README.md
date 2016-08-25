@@ -14,6 +14,7 @@ Will install all dependencies (build and runtime dependencies)
 Create a config.json file that can be passed as cmd arg
 ```javascript
 {
+  "logLevel": [DEBUG|INFO|WARN|ERROR], // define one of the given log levels
   "port": [http port],
   "https": {
     "port": [https port],
