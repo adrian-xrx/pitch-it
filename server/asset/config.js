@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 const CONFIG = {
   socket: {
     host: 'localhost',
