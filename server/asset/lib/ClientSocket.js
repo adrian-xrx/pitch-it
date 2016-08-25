@@ -1,15 +1,20 @@
 'use strict';
 export default class ClientSocket {
-  constructor(url, connected, disconnected) {
+  constructor(host, port, connected, disconnected) {
     this._messageHandlers = {};
     this._connectedCallback = connected;
     this._disconnectedCallback = disconnected;
-    this._socket = new WebSocket(url);
+    let socketURL = (this._isTLS ? 'wss' : 'ws') + '://' + host + ':' + port;
+    this._socket = new WebSocket(socketURL);
     this._socket.onopen = connected;
     this._socket.onclose = disconnected;
     this._socket.onmessage = this._handleMessage.bind(this);
   }
   
+  _isTLS() {
+    return (window.location.protocol === 'https:')
+  }
+
   _connected() {
     console.log('Connected');
     if (this._connectedCallback) {

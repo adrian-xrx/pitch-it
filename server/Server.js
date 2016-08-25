@@ -1,6 +1,8 @@
 'use strict';
 const http = require('http');
+const https = require('https');
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const CallManager = require('./lib/CallManager');
 const logger = require('./lib/Logger').getInstance();
@@ -9,23 +11,62 @@ const message_types = require('./shared/Message_Types');
 
 class Server {
   constructor(config) {
-    this._server = http.createServer();
     this._app = express();
-    this._socketManager = new SocketManager(this._server);
+
+    let assetPath = path.join(__dirname + '/asset');
+    this._app.use(express.static(assetPath));
+    
+    if (config.https) {
+      this._httpsServer = this._setupHttpsServer(config.https.key, config.https.certificate, config.https.passphrase);
+    }
+
+    this._httpServer = http.createServer();
+    if (this._httpsServer) {
+      this._setupSocketServer(this._httpsServer);
+      this._httpsServer.on('request', this._app);
+      logger.info('Start https at port ' + config.https.port);
+      this._httpsServer.listen(config.https.port, () => {
+        logger.debug('https running');
+      });
+      let httpApp = express();
+      httpApp.use((req, res) => {
+        let createRedirectUrl = 'https://' + req.hostname;
+        createRedirectUrl += (req.port) ? ':' + req.port : '';
+        createRedirectUrl += req.originalUrl;
+        res.redirect(301, createRedirectUrl);
+      });
+      this._httpServer.on('request', httpApp);
+    } else {
+      this._setupSocketServer(this._httpServer);
+      this._httpServer.on('request', this._app);
+    }
+    
+    logger.info('Start http at port ' + config.port);
+    this._httpServer.listen(config.port, () => {
+      logger.debug('http running');
+    });
+  }
+
+  _setupHttpsServer(keyPath, certPath, passphrase) {
+      try {
+        let key = fs.readFileSync(keyPath).toString();
+        let cert = fs.readFileSync(certPath).toString();
+        let credentials = {
+          key: key,
+          cert: cert,
+          passphrase: passphrase || null
+        };
+        return https.createServer(credentials);
+      } catch (err) {
+        logger.error("Error reading https certificate or key: " + err);
+      }
+  }
+
+  _setupSocketServer(server) {
+    this._socketManager = new SocketManager(server);
     this._callManager = new CallManager(this._socketManager);
     
     this._registerMessageHandlers();
-    let assetPath = path.join(__dirname + '/asset');
-    this._app.use(express.static(assetPath));
-    this._app.get('/stun_turn', (req, res) => {
-      
-    });
-    
-    this._server.on('request', this._app);
-    logger.info('Start at port ' + config.port);
-    this._server.listen(config.port, () => {
-      logger.debug('Running...');
-    });
   }
   
   _registerMessageHandlers() {

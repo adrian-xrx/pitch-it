@@ -11,15 +11,19 @@ function validateConfig(config) {
   return retVal;
 }
 
+function launch(config) {
+  if (validateConfig(config)) {
+    new Server(config);
+  } else {
+    console.log('INVALID CONFIG\nEXIT');
+  }
+}
+
 console.log('\n-------------------------------------------------');
 console.log('  ' + pkg.name);
 console.log('    v' + pkg.version);
 console.log('-------------------------------------------------\n');
-
-let config = {
-  port: 80
-};
-
+let config;
 if (process.argv[2]) {
   let configFile = fs.readFileSync(process.argv[2]);
   if (configFile) {
@@ -27,8 +31,8 @@ if (process.argv[2]) {
   }
 }
 
-if (validateConfig(config)) {
-  new Server(config);
+if (config) {
+  launch(config);
 } else {
-  console.log('INVALID CONFIG\nEXIT');
+  console.log('Please, specify a config file');
 }

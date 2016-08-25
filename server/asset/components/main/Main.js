@@ -23,8 +23,7 @@ export default class Main extends React.Component {
       joinData: null,
       user: {}
     };
-    let socketURL = 'ws://' + config.socket.host + ':' + config.socket.port;
-    this._socket = new ClientSocket(socketURL, () => {
+    this._socket = new ClientSocket(config.socket.host, config.socket.port, () => {
       this._socket.send({
         type: message_types.REGISTER,
         username: window.username
