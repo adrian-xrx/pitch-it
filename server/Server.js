@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 const http = require('http');
 const https = require('https');

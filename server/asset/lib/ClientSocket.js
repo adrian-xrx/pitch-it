@@ -1,10 +1,14 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 export default class ClientSocket {
   constructor(host, port, connected, disconnected) {
     this._messageHandlers = {};
     this._connectedCallback = connected;
     this._disconnectedCallback = disconnected;
-    let socketURL = (this._isTLS ? 'wss' : 'ws') + '://' + host + ':' + port;
+    let socketURL = (this._isTLS() ? 'wss' : 'ws') + '://' + host + ':' + port;
     this._socket = new WebSocket(socketURL);
     this._socket.onopen = connected;
     this._socket.onclose = disconnected;

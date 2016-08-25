@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 const fs = require('fs');
 const path = require('path');
 

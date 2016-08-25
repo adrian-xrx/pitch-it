@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 import React from 'react';
 
 import RoomListItem from '../roomListItem/RoomListItem';

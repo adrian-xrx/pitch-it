@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 import message_types from '../../shared/Message_Types';
 
 export default class DrawHandler {

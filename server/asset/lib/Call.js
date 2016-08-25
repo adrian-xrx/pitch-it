@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 import message_types from '../../shared/Message_Types';
 import config from '../config';

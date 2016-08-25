@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 let Server = require('./Server');
 let pkg = require('../package.json');

@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 module.exports = {
     CALL_CREATE: 'call.create',
     CALL_JOIN: 'call.join',

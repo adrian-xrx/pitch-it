@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 const crypto = require('crypto');
 const Call = require('./Call');

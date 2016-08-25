@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 import React from 'react';
 import Logo from '../logo/Logo';

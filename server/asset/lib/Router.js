@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 export default class Router {
   constructor (routes) {
     window.onhashchange = this._onRouteChange.bind(this);

@@ -1,3 +1,7 @@
+/**
+ * BSD-Licensed, J-Pi
+ */
+
 'use strict';
 const WebSocketServer = require('ws').Server;
 const SocketCache = require('./SocketCache');
