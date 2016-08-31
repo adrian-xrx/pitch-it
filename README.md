@@ -84,4 +84,4 @@ Take a look at the [contribution guide](CONTRIBUTING.md)
 
 ## License
 BSD License  
-Copyright (c) 2016, the creators of pitch it
+Copyright (c) 2016, The creators of pitch it

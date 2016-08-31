@@ -1,8 +1,9 @@
 /**
- * BSD-Licensed
- * @author J-Pi
+ * This code is licensed under the BSD license that can
+ * be found in the LICENSE file in the root directory
+ * 
+ * Authors: J-Pi
  */
-
 import React from 'react';
 
 import './video.less';
