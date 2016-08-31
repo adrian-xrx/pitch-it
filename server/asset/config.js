@@ -1,5 +1,6 @@
 /**
- * BSD-Licensed, J-Pi
+ * BSD-Licensed
+ * @author J-Pi
  */
 
 const CONFIG = {

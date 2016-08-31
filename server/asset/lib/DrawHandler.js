@@ -1,5 +1,6 @@
 /**
- * BSD-Licensed, J-Pi
+ * BSD-Licensed
+ * @author J-Pi
  */
 
 import message_types from '../../shared/Message_Types';

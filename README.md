@@ -1,9 +1,11 @@
-# pitch it
+pitch it
+========
 pitch it is comunication tool based on webrtc
+
 ## Prerequesits
 To run or build pitch it you need to have nodejs and npm installed.
 ## Installation
-Recommended: Download a prebuild version from the release area
+Recommended: Download a prebuild version from the release area  
 Unzip and navigate to the folder
 ```
 $ npm install
@@ -74,9 +76,12 @@ Then you can execute
 ```
 $ npm run dev
 ```
-to start the webpack dev server for development.
+to start the webpack dev server for development.  
 The application will be available at localhost:8080/webpack-dev-server
 
+## Contributing
+Take a look at the [contribution guide](CONTRIBUTING.md)
+
 ## License
-BSD License
+BSD License  
 Copyright (c) 2016, the creators of pitch it
