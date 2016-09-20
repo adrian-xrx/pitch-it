@@ -2,7 +2,11 @@
   "name": "pitch-it",
   "version": "0.8.0",
   "description": "WebRTC based communication tool",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/J-Pi/pitch-it.git"
+  },
   "scripts": {
     "start": "node ./server/run.js",
     "clean": "node ./scripts/clean.js",
