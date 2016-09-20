@@ -2,7 +2,7 @@
   "name": "pitch-it",
   "version": "0.8.0",
   "description": "WebRTC based communication tool",
-  "license": "BSD",
+  "license": "Apache 2.0",
   "scripts": {
     "start": "node ./server/run.js",
     "clean": "node ./scripts/clean.js",
