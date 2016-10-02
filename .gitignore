@@ -53,3 +53,4 @@ dist/
 #others
 *.log
 config.json
+coverage/

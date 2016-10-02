@@ -18,7 +18,7 @@
 'use strict';
 
 const assert = require('assert');
-const SocketCache = require('../server/lib/SocketCache');
+const SocketCache = require('../../server/lib/SocketCache');
 
 describe('SocketCache', function () {
   var instance;

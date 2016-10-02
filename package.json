@@ -13,7 +13,8 @@
     "copy": "node ./scripts/copy.js",
     "build": "npm run clean && npm run copy && webpack --config ./webpack.config.js",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js",
-    "test": "mocha ./test"
+    "test": "mocha ./test --recursive",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive"
   },
   "dependencies": {
     "express": "4.14.0",
@@ -27,6 +28,7 @@
     "babel-preset-es2015": "6.14.0",
     "babel-preset-react": "6.11.1",
     "css-loader": "0.25.0",
+    "istanbul": "0.4.5",
     "less": "2.7.1",
     "less-loader": "2.2.3",
     "mocha": "3.0.2",

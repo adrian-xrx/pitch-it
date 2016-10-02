@@ -18,8 +18,8 @@
 'use strict';
 
 const assert = require('assert');
-const Call = require('../server/lib/Call');
-const message_types = require('../server/shared/message_types');
+const Call = require('../../server/lib/Call');
+const message_types = require('../../server/shared/message_types');
 
 describe('Call', function () {
   var callInstance, socketManagerMock;
