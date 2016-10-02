@@ -22,6 +22,10 @@ import './login.less';
 
 export default class Login extends React.Component {
   
+  static get KEY_ENTER() {
+    return 13;
+  }
+
   _register(username) {
     if (username) {
       console.log('Register with user: ' + username);
@@ -35,15 +39,23 @@ export default class Login extends React.Component {
     this._register(username);
   }
   
+  onKeyUpHandler(evt) {
+    switch(evt.nativeEvent.keyCode) {
+      case Login.KEY_ENTER:
+        this.onSubmitClick();
+        break;
+    }
+  }
+  
   render() {
     return (
       <div className="login-page">
         <Logo large="true" />
-        <label className="label-username" for="field-username">
+        <label className="label-username" htmlFor="field-username">
           Enter a username:<br />
-          <input className="field-username" id="field-username" name="field-username" type="text" ref="username"/>
+          <input className="field-username" id="field-username" name="field-username" type="text" ref="username" onKeyUp={this.onKeyUpHandler.bind(this)}/>
         </label>
-        <div className="submit" onClick={this.onSubmitClick.bind(this)}></div>
+        <div className="submit" onClick={this.onSubmitClick.bind(this)} ></div>
       </div>
     );
   }

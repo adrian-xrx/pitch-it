@@ -23,7 +23,6 @@ import message_types from '../../../shared/Message_Types';
 
 import Header from '../header/Header';
 import RoomList from '../roomList/RoomList';
-import Video from '../video/Video';
 import Draw from '../draw/Draw';
 import CallRespond from '../callRespond/CallRespond';
 
@@ -55,8 +54,10 @@ export default class Main extends React.Component {
     this._drawHandler = new DrawHandler(this._socket, this._receiveDraw.bind(this));
   }
   _remoteStreamAdded(stream) {
+    let audio = new Audio(stream);
+    audio.play();
     this.setState({
-      remoteStream: stream 
+      isActive: true
     });
   }
   _onRegistered(msg) {
@@ -109,11 +110,10 @@ export default class Main extends React.Component {
     this.refs.drawArea.performDraw(drawData);
   }
   render () {
-    if (this.state.remoteStream) {
+    if (this.state.isActive) {
       return (
         <div className="main">
           <Header user={this.state.user}/>
-          <Video stream={this.state.remoteStream} noVideo="No Stream" />
           <Draw
             ref="drawArea"
             width="600px"

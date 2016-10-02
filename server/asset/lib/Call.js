@@ -20,15 +20,24 @@ import message_types from '../../shared/Message_Types';
 import config from '../config';
 
 export default class Call {
-  constructor(socket, target, remoteStreamAdded) {
-    window.PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-    window.SessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription;
-    window.IceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
-    navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
 
+  static get ICE_CANDIDATE() {
+    return window.mozRTCIceCandidate || window.RTCIceCandidate;
+  }
+
+  static get SESSION_DESCRIPTION() {
+    return window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription;
+  }
+  
+  static get PEER_CONNECTION () {
+    return window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+  }
+
+  constructor(socket, target, remoteStreamAdded) {
+    navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
     this._socket = socket;
     this._remoteStreamAddedCallback = remoteStreamAdded;
-    this._connection = new PeerConnection({
+    this._connection = new Call.PEER_CONNECTION({
       iceServers: config.stun.concat(config.turn)
     });
     
@@ -99,10 +108,10 @@ export default class Call {
   }
   
   _offer() {
-    navigator.getUserMedia({video: true, audio: true}, (stream) => {
+    navigator.getUserMedia({audio: true}, (stream) => {
       this._connection.addStream(stream);
       this._connection.createOffer((offer) => {
-        this._connection.setLocalDescription(new SessionDescription(offer), () => {
+        this._connection.setLocalDescription(new Call.SESSION_DESCRIPTION(offer), () => {
           this._socket.send({
             type: message_types.RTC_OFFER,
             callID: this._callID,
@@ -115,23 +124,11 @@ export default class Call {
   
   _gotOffer(msg) {
     if (msg.offer) {
-      let videoConstrains = {
-        width: {
-          min: 200,
-          ideal: 300,
-          max: 400
-        },
-        height: {
-          min: 200,
-          ideal: 300,
-          max: 400
-        },
-      }
-      navigator.getUserMedia({video: videoConstrains, audio: true}, (stream) => {
+      navigator.getUserMedia({audio: true}, (stream) => {
         this._connection.addStream(stream);
-        this._connection.setRemoteDescription(new SessionDescription(msg.offer), () => {
+        this._connection.setRemoteDescription(new Call.SESSION_DESCRIPTION(msg.offer), () => {
           this._connection.createAnswer((answer) => {
-            this._connection.setLocalDescription(new SessionDescription(answer), () => {
+            this._connection.setLocalDescription(new Call.SESSION_DESCRIPTION(answer), () => {
               this._socket.send({
                 type: message_types.RTC_ANSWER,
                 callID: this._callID,
@@ -146,13 +143,13 @@ export default class Call {
   
   _gotAnswer(msg) {
     if (msg.answer) {
-      this._connection.setRemoteDescription(new SessionDescription(msg.answer));
+      this._connection.setRemoteDescription(new Call.SESSION_DESCRIPTION(msg.answer));
     }
   }
   
   _gotIceCandidate(msg) {
     if (msg.candidate) {
-      this._connection.addIceCandidate(new IceCandidate(msg.candidate));  
+      this._connection.addIceCandidate(new Call.ICE_CANDIDATE(msg.candidate));  
     }
   }
   

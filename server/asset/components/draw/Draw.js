@@ -103,7 +103,7 @@ export default class Draw extends React.Component {
   
   render() {
     let width = (window.innerWidth - 20) + 'px';
-    let height = (window.innerHeight - 160) + 'px';
+    let height = (window.innerHeight - 70) + 'px';
     return (
       <canvas ref="drawArea" className="draw-canvas" width={width} height={height}></canvas>
     );
