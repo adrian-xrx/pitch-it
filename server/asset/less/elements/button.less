@@ -18,14 +18,19 @@
 @import (reference) "../common/colors.less";
 
 .btn {
-  width: 100px;
-  height: 25px;
   color: @black;
+  font-weight: bold;
   font-size: 11px;
   border: none;
   background-color: @primary;
   margin: 5px;
   cursor: pointer;
+  padding: 5px 10px;
+
+  &.btn-large {
+    font-size: 12px;
+    padding: 10px 20px;
+  }
   
   &:hover,
   &:focus {
@@ -33,7 +38,7 @@
     background-color: @primary_hover;
   }
   &:active {
-    outline: 1px solid @primary_hover;
+    outline: 2px solid @primary_hover;
   }
 
   &.large {

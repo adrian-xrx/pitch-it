@@ -14,43 +14,35 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+'use strict';
 
 import React from 'react';
 
-import RoomListItem from '../roomListItem/RoomListItem';
-import './roomList.less';
+import '../../less/elements/button.less';
 
-export default class ContactList extends React.Component {
+import './welcomeBox.less';
+
+export default class WelcomeBox extends React.Component {
   constructor() {
     super();
   }
   
-  itemClicked(item) {
-    if (this.props.onItemClicked) {
-      this.props.onItemClicked(item);
+  onCreateClicked(item) {
+    if (this.props.onCreateClicked) {
+      this.props.onCreateClicked();
     } else {
-      console.log('No list item click handler');
+      console.log('No create Whiteboard click handler');
     }
   }
   
   render() {
-    let roomItems = this.props.data.map((contact) => {
-      return (
-        <RoomListItem
-          key={contact.id}
-          data={contact}
-          onItemClicked={this.itemClicked.bind(this)}/>
-      );
-    });
     return (
-      <div className="room-list">
-        <div className="room-list-header">{this.props.header}</div>
-        <div className="room-list-content">
-          <ul>
-            {roomItems}
-          </ul>
+      <div className="welcome-box">
+        <div className="welcome-text">
+          Welcome to pitch it.<br />
+          Get started with your first whiteboard
         </div>
-        <button className="btn btn-create-create-room">Create Room</button>
+        <button className="btn btn-large" onClick={this.onCreateClicked.bind(this)}>Create Whiteboard</button>
       </div>
     );
   }

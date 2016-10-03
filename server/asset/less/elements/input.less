@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,30 +14,15 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+ 
+@import (reference) "../common/colors.less";
 
-import React from 'react';
-
-import './roomListItem.less';
-
-export default class RoomListItem extends React.Component {
-  constructor() {
-    super();
-  }
-  
-  itemClicked() {
-    if (this.props.onItemClicked) {
-      this.props.onItemClicked(this.props.data);
-    } else {
-      console.log('No item click handler');
-    }
-  }
-  
-  render() {
-    return (
-      <li className="room-list-item"
-          onClick={this.itemClicked.bind(this)}>
-        {this.props.data.name}
-      </li>
-    );
+.input-field {
+  border: 1px solid @primary;
+  color: @black;
+  padding: 0 5px 0 5px;
+    
+  &:focus {
+    outline: 1px solid @primary;
   }
 }

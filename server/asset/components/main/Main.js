@@ -14,6 +14,7 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+'use strict';
 
 import React from 'react';
 import './main.less';
@@ -22,7 +23,8 @@ import config from '../../config';
 import message_types from '../../../shared/Message_Types';
 
 import Header from '../header/Header';
-import RoomList from '../roomList/RoomList';
+import WelcomeBox from '../welcomeBox/WelcomeBox';
+import ParticipantList from '../participantList/ParticipantList';
 import Draw from '../draw/Draw';
 import CallRespond from '../callRespond/CallRespond';
 
@@ -51,7 +53,7 @@ export default class Main extends React.Component {
     this._socket.registerMessageHandler(message_types.CONTACT_LIST, this._displayContacts.bind(this));
     this._socket.registerMessageHandler(message_types.CALL_OFFER, this._joinOffer.bind(this));
     
-    this._drawHandler = new DrawHandler(this._socket, this._receiveDraw.bind(this));
+    this._drawHandler = new DrawHandler(this._socket, this._receiveDraw.bind(this), this._receiveClearDraw.bind(this));
   }
   _remoteStreamAdded(stream) {
     let audio = new Audio(stream);
@@ -106,8 +108,23 @@ export default class Main extends React.Component {
       this._drawHandler.sendDrawing(this._call.getCallId(), drawData); 
     }
   }
+  _clearDraw() {
+    if (this._call) {
+      this._drawHandler.sendClear(this._call.getCallId());
+    }
+  }
   _receiveDraw(drawData) {
     this.refs.drawArea.performDraw(drawData);
+  }
+
+  _receiveClearDraw() {
+    this.refs.drawArea.clearDraw();
+  }
+
+  createClicked() {
+    this.setState({
+      isActive: true
+    });
   }
   render () {
     if (this.state.isActive) {
@@ -116,19 +133,16 @@ export default class Main extends React.Component {
           <Header user={this.state.user}/>
           <Draw
             ref="drawArea"
-            width="600px"
-            height="200px"
-            onDraw={this._sendDraw.bind(this)}/>
+            onDraw={this._sendDraw.bind(this)}
+            onClear={this._clearDraw.bind(this)}/>
+          <ParticipantList />
         </div>
       );
     } else {
       return (
         <div className="main">
           <Header user={this.state.user}/>
-          <RoomList
-            header="Rooms"
-            data={this.state.contacts}
-            onItemClicked={this._createCall.bind(this)}/>
+          <WelcomeBox onCreateClicked={this.createClicked.bind(this)}/>
           <CallRespond
             data={this.state.joinData}
             accept={this._joinCall.bind(this)}

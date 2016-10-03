@@ -18,6 +18,9 @@
 import React from 'react';
 import Logo from '../logo/Logo';
 
+import '../../less/elements/button.less';
+import '../../less/elements/input.less';
+
 import './login.less';
 
 export default class Login extends React.Component {
@@ -53,7 +56,7 @@ export default class Login extends React.Component {
         <Logo large="true" />
         <label className="label-username" htmlFor="field-username">
           Enter a username:<br />
-          <input className="field-username" id="field-username" name="field-username" type="text" ref="username" onKeyUp={this.onKeyUpHandler.bind(this)}/>
+          <input className="input-field field-username" id="field-username" name="field-username" type="text" ref="username" onKeyUp={this.onKeyUpHandler.bind(this)}/>
         </label>
         <div className="submit" onClick={this.onSubmitClick.bind(this)} ></div>
       </div>

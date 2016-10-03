@@ -17,18 +17,21 @@
 
 @import (reference) "../../less/common/colors.less";
 
-.room-list-item {
-  font-size: 12px;
-  height: 40px;
-  line-height: 40px;
-  cursor: pointer;
-  padding-left: 10px;
-  padding-right: 10px;
-  
-  &:hover {
-    background-color: @hover-full;
-  }
-  &:active {
-    background-color: @active-full;
+@wb-height: 70px;
+@wb-width: 400px;
+@wb-top: calc(~"50% - "@wb-height/2);
+@wb-left: calc(~"50% - "@wb-width/2);
+
+.welcome-box {
+  position: relative;
+  width: @wb-width;
+  height: @wb-height; 
+  top: @wb-top;
+  left: @wb-left;
+  text-align: center;
+
+  .welcome-text {
+    padding: 5px; 
+    font-size: 18px;
   }
 }

@@ -46,6 +46,10 @@ export default class Draw extends React.Component {
     }
     this._context.strokeStyle = '#000000';
   }
+
+  clearDraw() {
+    this._context.clearRect(0, 0, this.refs.drawArea.width, this.refs.drawArea.height);
+  }
   
   _onDrawStart(event) {
     if (event.button === 0) {
@@ -90,6 +94,13 @@ export default class Draw extends React.Component {
       });
     }
   }
+
+  _onClearClick() {
+    this.clearDraw();
+    if (this.props.onClear) {
+      this.props.onClear();
+    }
+  }
   
   componentDidMount() {
     this._context = this.refs.drawArea.getContext('2d');
@@ -102,10 +113,13 @@ export default class Draw extends React.Component {
   }
   
   render() {
-    let width = (window.innerWidth - 20) + 'px';
+    let width = (window.innerWidth - 220) + 'px';
     let height = (window.innerHeight - 70) + 'px';
     return (
-      <canvas ref="drawArea" className="draw-canvas" width={width} height={height}></canvas>
+      <div className="draw">
+        <button className="btn clear-button" onClick={this._onClearClick.bind(this)}>Clear</button>
+        <canvas ref="drawArea" className="draw-canvas" width={width} height={height}></canvas>
+      </div>
     );
   }
 }

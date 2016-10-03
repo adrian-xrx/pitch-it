@@ -17,11 +17,27 @@
  
 @import (reference) "../../less/common/colors.less";
 
-.draw-canvas {
-  position: absolute;
-  z-index: 1;
-  border: 1px solid @light_grey;
-  background-color: @white;
+.draw {
+  
+  position: relative;
   top: 60px;
-  left: 10px;
+  width: 100%;
+  height: calc(~"100% - 60px");
+
+  .clear-button {
+    position: absolute;
+    z-index: 2;
+    margin: 0px;
+    right: 209px;
+    top: 1px;
+  }
+
+  .draw-canvas {
+    position: relative;
+    left: 10px;
+    z-index: 1;
+    border: 1px solid @light_grey;
+    background-color: @white;
+  }
+
 }

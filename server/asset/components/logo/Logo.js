@@ -17,6 +17,7 @@
 
 'use strict';
 import React from 'react';
+
 import './logo.less';
 
 export default class Logo extends React.Component {

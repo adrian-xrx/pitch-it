@@ -18,10 +18,12 @@
 import message_types from '../../shared/Message_Types';
 
 export default class DrawHandler {
-  constructor(socket, recieveDrawingCallback) {
+  constructor(socket, recieveDrawingCallback, clearDrawingCallback) {
     this._socket = socket;
     this._recieveDrawingCallback = recieveDrawingCallback;
+    this._clearDrawingCallback = clearDrawingCallback;
     this._socket.registerMessageHandler(message_types.DRAW_DRAWING, this._drawReceived.bind(this));
+    this._socket.registerMessageHandler(message_types.DRAW_CLEAR, this._drawClearReceived.bind(this));
   }
   
   sendDrawing(callID, data) {
@@ -31,9 +33,21 @@ export default class DrawHandler {
       data: data
     });
   }
+
+  sendClear(callID) {
+    this._socket.send({
+      type: message_types.DRAW_CLEAR,
+      callID: callID
+    });
+  }
   
   _drawReceived(msg) {
-    console.log('Recieved call data');
+    console.log('Recieved draw data');
     this._recieveDrawingCallback(msg.data);
+  }
+
+  _drawClearReceived() {
+    console.log('Recieved draw clear');
+    this._clearDrawingCallback();
   }
 }
