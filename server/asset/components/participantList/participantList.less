@@ -51,4 +51,19 @@
       }
     }
   }
+
+  .user-search-dropdown {
+    display: none;
+    position: absolute;
+    width: calc(~"100% - 5px");
+    max-height: 200px;
+    box-sizing: border-box;
+    box-shadow: 5px 5px 10px @light_grey;
+    margin-top: -5px;
+    background-color: @white;
+
+    &.active {
+      display:block;
+    }
+  }
 }

@@ -50,7 +50,7 @@ export default class Main extends React.Component {
 
     this._socket.registerMessageHandler(message_types.REGISTER, this._onRegistered.bind(this));
 
-    this._socket.registerMessageHandler(message_types.CONTACT_LIST, this._displayContacts.bind(this));
+    this._socket.registerMessageHandler(message_types.CONTACT_LIST, this._setUsers.bind(this));
     this._socket.registerMessageHandler(message_types.CALL_OFFER, this._joinOffer.bind(this));
     
     this._drawHandler = new DrawHandler(this._socket, this._receiveDraw.bind(this), this._receiveClearDraw.bind(this));
@@ -72,9 +72,9 @@ export default class Main extends React.Component {
       });
     }
   }
-  _displayContacts(msg) {
+  _setUsers(msg) {
     this.setState({
-      contacts: msg.contacts
+      availableUserList: msg.contacts
     });
   }
   _createCall(contact) {
@@ -135,7 +135,9 @@ export default class Main extends React.Component {
             ref="drawArea"
             onDraw={this._sendDraw.bind(this)}
             onClear={this._clearDraw.bind(this)}/>
-          <ParticipantList />
+          <ParticipantList
+            availableUsers={this.state.availableUserList}
+          />
         </div>
       );
     } else {

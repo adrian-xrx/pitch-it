@@ -46,10 +46,17 @@ export default class WelcomeBox extends React.Component {
   
   render() {
     let listItems = this._createListItems();
+    let availableParticipants = this._createListItems(this.props.availableUsers);
     return (
       <div className="participant-list">
         <div className="participant-list-header">Participants</div>
-        <input className="input-field" /><button className="btn" onClick={this.onAddClicked.bind(this)}>Add</button>
+        <input className="input-field user-search" />
+        <div className="user-search-dropdown">
+          <ul>
+            {availableParticipants}
+          </ul>
+        </div>
+        <button className="btn" onClick={this.onAddClicked.bind(this)}>Add</button>
         <ul>
           {listItems}
         </ul>
