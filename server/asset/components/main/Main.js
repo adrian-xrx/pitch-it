@@ -137,6 +137,8 @@ export default class Main extends React.Component {
             onClear={this._clearDraw.bind(this)}/>
           <ParticipantList
             availableUsers={this.state.availableUserList}
+            onAddClicked={this._createCall.bind(this)}
+            participants={this.state.participants}
           />
         </div>
       );

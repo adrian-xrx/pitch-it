@@ -28,38 +28,37 @@ export default class WelcomeBox extends React.Component {
     super();
   }
   
-  onAddClicked(item) {
-    console.log('TODO - add item')
-  }
-
-  _createListItems(participants) {
-    if (participants) {
-      return (
-        <li className="participant-list-item">{participant.name}</li>
-      );
-    } else {
-      return (
-        <li className="empty-marker">No participants</li>
-      );
+  _onAddClicked() {
+    let userToAdd = this.refs.search.value;
+    if (userToAdd) {
+      console.log('Add participant: ' + userToAdd);
+      let tmpUser = this._findUser(userToAdd);
+      if (tmpUser) {
+        console.log('User found');
+        this.props.onAddClicked(tmpUser);
+      } else {
+        console.log('User could not be found');
+      }
     }
   }
-  
+
+  _findUser(userToSearch) {
+    for (let i = 0; i < this.props.availableUsers.length; i++) {
+      let user = this.props.availableUsers[i];
+      if (user.name === userToSearch) {
+        return user;
+      }
+    }
+  }
+
+
   render() {
-    let listItems = this._createListItems();
-    let availableParticipants = this._createListItems(this.props.availableUsers);
     return (
       <div className="participant-list">
         <div className="participant-list-header">Participants</div>
-        <input className="input-field user-search" />
-        <div className="user-search-dropdown">
-          <ul>
-            {availableParticipants}
-          </ul>
+        <div className="participant-list-add">
+          <input className="input-field" ref="search"/><button className="btn" onClick={this._onAddClicked.bind(this)}>Add</button>
         </div>
-        <button className="btn" onClick={this.onAddClicked.bind(this)}>Add</button>
-        <ul>
-          {listItems}
-        </ul>
       </div>
     );
   }
