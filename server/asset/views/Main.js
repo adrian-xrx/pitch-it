@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,24 +14,3 @@
  * be found in the LICENSE file in the root directory
  * 
  */
-
-@import (reference) "../../less/common/colors.less";
-
-@wb-height: 70px;
-@wb-width: 400px;
-@wb-top: calc(~"50% - "@wb-height/2);
-@wb-left: calc(~"50% - "@wb-width/2);
-
-.welcome-box {
-  position: relative;
-  width: @wb-width;
-  height: @wb-height; 
-  top: @wb-top;
-  left: @wb-left;
-  text-align: center;
-
-  .welcome-text {
-    padding: 5px; 
-    font-size: 18px;
-  }
-}

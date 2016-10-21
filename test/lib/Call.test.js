@@ -19,7 +19,9 @@
 
 const assert = require('assert');
 const Call = require('../../server/lib/Call');
-const message_types = require('../../server/shared/message_types');
+const TypeCall = require('../../server/shared/types/Call');
+const TypeRTC = require('../../server/shared/types/RTC');
+const TypeDraw = require('../../server/shared/types/Draw');
 
 describe('Call', function () {
   var callInstance, socketManagerMock;
@@ -59,24 +61,24 @@ describe('Call', function () {
       callInstance.establish();
       assert.equal(Object.keys(funcResults).length, 2);
       assert.notEqual(typeof funcResults['123'], 'undefined');
-      assert.equal(funcResults['123'].type, message_types.CALL_ESTABLISH);
+      assert.equal(funcResults['123'].type, TypeCall.ESTABLISH.TYPE);
       assert.equal(funcResults['123'].data.task, 'offer');
       assert.notEqual(typeof funcResults['123'], 'undefined');
-      assert.equal(funcResults['321'].type, message_types.CALL_ESTABLISH);
+      assert.equal(funcResults['321'].type, TypeCall.ESTABLISH.TYPE);
       assert.equal(funcResults['321'].data.task, 'answer');
     });
     it('should send an offer', function () {
       callInstance.sendOffer('offer');
       assert.equal(Object.keys(funcResults).length, 1);
       assert.notEqual(typeof funcResults['321'], 'undefined');
-      assert.equal(funcResults['321'].type, message_types.RTC_OFFER);
+      assert.equal(funcResults['321'].type, TypeRTC.OFFER.TYPE);
       assert.equal(funcResults['321'].data.offer, 'offer');
     });
     it('should send an answer', function () {
       callInstance.sendAnswer('answer');
       assert.equal(Object.keys(funcResults).length, 1);
       assert.notEqual(typeof funcResults['123'], 'undefined');
-      assert.equal(funcResults['123'].type, message_types.RTC_ANSWER);
+      assert.equal(funcResults['123'].type, TypeRTC.ANSWER.TYPE);
       assert.equal(funcResults['123'].data.answer, 'answer');
     });
   });
@@ -99,7 +101,7 @@ describe('Call', function () {
       let funcResult = funcResults[0];
       assert.equal(funcResult.targets.length, 1);
       assert.equal(funcResult.targets[0], '321');
-      assert.equal(funcResult.type, message_types.DRAW_DRAWING);
+      assert.equal(funcResult.type, TypeDraw.DRAWING.TYPE);
       assert.equal(funcResult.data.data, 'draw');
     });
     it('should broadcast the drawing from the participants', function () {
@@ -108,7 +110,7 @@ describe('Call', function () {
       let funcResult = funcResults[0];
       assert.equal(funcResult.targets.length, 1);
       assert.equal(funcResult.targets[0], '123');
-      assert.equal(funcResult.type, message_types.DRAW_DRAWING);
+      assert.equal(funcResult.type, TypeDraw.DRAWING.TYPE);
       assert.equal(funcResult.data.data, 'draw');
     });
     it('should broadcast the drawing from the participants (multiple participants)', function () {
@@ -119,7 +121,7 @@ describe('Call', function () {
       assert.equal(funcResult.targets.length, 2);
       assert.equal(funcResult.targets[0], '123');
       assert.equal(funcResult.targets[1], '456');
-      assert.equal(funcResult.type, message_types.DRAW_DRAWING);
+      assert.equal(funcResult.type, TypeDraw.DRAWING.TYPE);
       assert.equal(funcResult.data.data, 'draw');
     });
   });

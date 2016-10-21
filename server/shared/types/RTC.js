@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,15 +14,33 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@primary: #FFC107;
-@light_grey: #c0c0c0;
-@dark_shadow: @dark_grey;
-@dark_grey: #767676;
-@primary_background: #444;
-@white: #fff;
-@black_transparent: rgba(26, 26, 26, 0.8);
-@hover-full: rgba(200,200,200,0.4);
-@active-full: rgba(200,200,200,0.3);
-@primary_hover: #FFB300;
-@black: #000;
+'use strict';
+class RTCOffer {
+  static get TYPE() {
+    return 'rtc.offer'
+  }
+  constructor() {
+  }
+}
+
+class RTCAnswer {
+  static get TYPE() {
+    return 'rtc.answer'
+  }
+  constructor() {
+  }
+}
+
+class RTCIceCandidate {
+ static get TYPE() {
+    return 'rtc.icecandidate';
+  }
+  constructor() {
+  }
+}
+
+module.exports = {
+  OFFER: RTCOffer,
+  ANSWER: RTCAnswer,
+  ICE_CANDIDATE: RTCIceCandidate
+};

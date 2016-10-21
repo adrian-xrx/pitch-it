@@ -16,35 +16,24 @@
  */
 
 'use strict';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Router from './lib/Router';
-import Main from './components/main/Main';
-import Login from './components/login/Login';
 
-import './less/base.less';
-import './less/content.less';
-import './less/elements/button.less';
-  
-if (typeof window.console === 'undefined') {
-  window.console = {
-    log: function () {},
-    info: function () {},
-    warn: function () {},
-    error: function () {}
-  };
-}
+import FacadeRouter from './lib/FacadeRouter';
+import FacadeView from './lib/FacadeView';
+import Login from './views/Login';
+import FacadeElement from './lib/FacadeElement';
 
-let router = new Router({
+let login = new Login('#render-container');
+
+let defaultView2 = new FacadeView('#render-container');
+let elm2 = new FacadeElement(null, ['my-class'], 'My Fancy element');
+defaultView2.appendChild(elm2);
+
+let router = new FacadeRouter({
   "login": {
-    onEnter: () => {
-      ReactDOM.render(<Login />, document.querySelector('#render-container'));
-    }
+    view: login
   },
   "main": {
-    onEnter: () => {
-      ReactDOM.render(<Main />, document.querySelector('#render-container'));
-    }
+    view: defaultView2
   },
   "default": {
     onEnter: () => {

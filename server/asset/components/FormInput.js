@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,41 +14,27 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@import (reference) "../../less/common/colors.less";
 
-.call-respond {
-  position: absolute;
-  bottom: -130px;
-  right: 20px;
-  padding: 10px;
-  text-align: center;
-  background-color: @black_transparent;
-  height: 110px;
-  
-  &.out {
-    animation: popout 0.5s ease;
-    animation-fill-mode: forwards;
-  }
-  
-  &.in {
-    animation: popin 0.5s ease;
-    animation-fill-mode: forwards;
-  }
-  .caller {
-    margin-bottom: 10px;
-    color: @white; 
-  }
-}
+import FacadeElement from '../lib/FacadeElement';
 
-@keyframes popout {
-  0%   {bottom: -10px;}
-  50%  {bottom: 0px;}
-  100% {bottom: -130px;}
-}
+export default class FormInput extends FacadeElement {
+  constructor(id, classes, label, value) {
+    super(id, classes, value);
+    this._label = label;
+  }
 
-@keyframes popin {
-  0%   {bottom: -130px;}
-  50%  {bottom: 0px;}
-  100% {bottom: -10px;}
+  render() {
+    let elm = document.createElement('div');
+    this._attachClasses(elm);
+    let labelElm = document.createElement('label');
+    labelElm.setAttribute('for', this._id);
+    labelElm.textContent = this._label;
+    let inputElm = document.createElement('input');
+    inputElm.id = this._id;
+    inputElm.name =this._id;
+    inputElm.value = this._content;
+    elm.appendChild(labelElm);
+    elm.appendChild(inputElm);
+    return elm;
+  }
 }

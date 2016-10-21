@@ -24,7 +24,10 @@ const express = require('express');
 const CallManager = require('./lib/CallManager');
 const logger = require('./lib/Logger').getInstance();
 const SocketManager = require('./lib/SocketManager');
-const message_types = require('./shared/Message_Types');
+const Call = require('./shared/types/Call');
+const RTC = require('./shared/types/RTC');
+const Draw = require('./shared/types/Draw');
+const Authentication = require('./shared/types/Authentication');
 
 class Server {
   constructor(config) {
@@ -87,12 +90,12 @@ class Server {
   }
   
   _registerMessageHandlers() {
-    this._socketManager.registerMessageHandler(message_types.CALL_CREATE, this._createCallHandler.bind(this));
-    this._socketManager.registerMessageHandler(message_types.RTC_OFFER, this._rtcOfferHandler.bind(this));
-    this._socketManager.registerMessageHandler(message_types.RTC_ICE_CANDIDATE, this._rtcIceCandidateHandler.bind(this));
-    this._socketManager.registerMessageHandler(message_types.RTC_ANSWER, this._rtcAnswerHandler.bind(this));
-    this._socketManager.registerMessageHandler(message_types.DRAW_DRAWING, this._drawDrawingHandler.bind(this));
-    this._socketManager.registerMessageHandler(message_types.REGISTER, this._register.bind(this));    
+    this._socketManager.registerMessageHandler(Call.CREATE.TYPE, this._createCallHandler.bind(this));
+    this._socketManager.registerMessageHandler(RTC.OFFER.TYPE, this._rtcOfferHandler.bind(this));
+    this._socketManager.registerMessageHandler(RTC.ICE_CANDIDATE.TYPE, this._rtcIceCandidateHandler.bind(this));
+    this._socketManager.registerMessageHandler(RTC.ANSWER.TYPE, this._rtcAnswerHandler.bind(this));
+    this._socketManager.registerMessageHandler(Draw.DRAWING.TYPE, this._drawDrawingHandler.bind(this));
+    this._socketManager.registerMessageHandler(Authentication.REGISTER.TYPE, this._register.bind(this));    
   }
 
   _register(origin, msg) {
@@ -103,11 +106,11 @@ class Server {
   _createCallHandler(origin, msg) {
     if (this._socketManager.exist(msg.target)) {
       let callID = this._callManager.registerCall(origin);
-      this._socketManager.sendTo(origin, message_types.CALL_CREATE, {
+      this._socketManager.sendTo(origin, Call.CREATE.TYPE, {
         status: 'pending',
         callID: callID
       });
-      this._socketManager.sendTo(msg.target, message_types.CALL_OFFER, {
+      this._socketManager.sendTo(msg.target, Call.OFFER.TYPE, {
         callID: callID,
         caller: this._socketManager.getUserOf(origin)
       }); 

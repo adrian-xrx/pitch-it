@@ -15,20 +15,20 @@
  * 
  */
 
-import message_types from '../../shared/Message_Types';
+import TypeDraw from '../../shared/types/Draw';
 
 export default class DrawHandler {
   constructor(socket, recieveDrawingCallback, clearDrawingCallback) {
     this._socket = socket;
     this._recieveDrawingCallback = recieveDrawingCallback;
     this._clearDrawingCallback = clearDrawingCallback;
-    this._socket.registerMessageHandler(message_types.DRAW_DRAWING, this._drawReceived.bind(this));
-    this._socket.registerMessageHandler(message_types.DRAW_CLEAR, this._drawClearReceived.bind(this));
+    this._socket.registerMessageHandler(TypeDraw.DRAWING.TYPE, this._drawReceived.bind(this));
+    this._socket.registerMessageHandler(TypeDraw.CLEAR.TYPE, this._drawClearReceived.bind(this));
   }
   
   sendDrawing(callID, data) {
     this._socket.send({
-      type: message_types.DRAW_DRAWING,
+      type: TypeDraw.DRAWING.TYPE,
       callID: callID,
       data: data
     });
@@ -36,7 +36,7 @@ export default class DrawHandler {
 
   sendClear(callID) {
     this._socket.send({
-      type: message_types.DRAW_CLEAR,
+      type: TypeDraw.CLEAR.TYPE,
       callID: callID
     });
   }

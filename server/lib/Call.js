@@ -18,7 +18,9 @@
 'use strict';
 const crypto = require('crypto');
 const logger = require('./Logger').getInstance();
-const message_types = require('../shared/Message_Types');
+const TypeCall = require('../shared/types/Call');
+const TypeRTC = require('../shared/types/RTC');
+const TypeDraw = require('../shared/types/Draw');
 
 class Call {
   constructor(owner, socketManager) {
@@ -62,11 +64,11 @@ class Call {
   
   establish() {
     if (this._owner && this._participants.length > 0 && this._participants[0]) {
-      this._socketManager.sendTo(this._owner, message_types.CALL_ESTABLISH, {
+      this._socketManager.sendTo(this._owner, TypeCall.ESTABLISH.TYPE, {
         task: 'offer'
       });
 
-      this._socketManager.sendTo(this._participants, message_types.CALL_ESTABLISH, {
+      this._socketManager.sendTo(this._participants, TypeCall.ESTABLISH.TYPE, {
         task: 'answer'
       });
     } else {
@@ -76,7 +78,7 @@ class Call {
   
   sendOffer(offer) {
     if (offer && this._participants.length > 0 && this._participants[0]) {
-      this._socketManager.sendTo(this._participants, message_types.RTC_OFFER, {
+      this._socketManager.sendTo(this._participants, TypeRTC.OFFER.TYPE, {
         offer: offer
       });
     } else {
@@ -85,7 +87,7 @@ class Call {
   }
   sendAnswer(answer) {
     if (answer && this._owner) {
-      this._socketManager.sendTo(this._owner,  message_types.RTC_ANSWER, {
+      this._socketManager.sendTo(this._owner,  TypeRTC.ANSWER.TYPE, {
         answer: answer
       });
     } else {
@@ -101,7 +103,7 @@ class Call {
       return (participant !== origin);
     });
     targets = targets.concat(filteredParticipants);
-    this._socketManager.sendTo(targets, message_types.DRAW_DRAWING, {
+    this._socketManager.sendTo(targets, TypeDraw.DRAWING.TYPE, {
       data: msg.data
     });
   }

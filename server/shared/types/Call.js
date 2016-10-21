@@ -14,18 +14,44 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+'use strict';
+
+class CallOffer {
+  static get TYPE() {
+    return 'call.offer';
+  }
+  constructor() {
+  }
+}
+
+class CallJoin {
+  static get TYPE() {
+    return 'call.join';
+  }
+  constructor() {
+  }
+}
+
+class CallCreate {
+  static get TYPE() {
+    return 'call.create';
+  }
+  constructor() {
+  }
+}
+
+class CallEstablish {
+  static get TYPE() {
+    return 'call.establish';
+  }
+  constructor() {
+  }
+}
 
 module.exports = {
-    CALL_CREATE: 'call.create',
-    CALL_JOIN: 'call.join',
-    CALL_OFFER: 'call.offer',
-    CALL_ESTABLISH: 'call.establish',
-    FAIL: 'failed',
-    CONTACT_LIST: 'user.list',
-    RTC_OFFER: 'rtc.offer',
-    RTC_ANSWER: 'rtc.answer',
-    RTC_ICE_CANDIDATE: 'rtc.icecandidate',
-    DRAW_DRAWING: 'draw.drawing',
-    DRAW_CLEAR: 'draw.clear',
-    REGISTER: 'user.register'
+  CREATE: CallCreate,
+  OFFER: CallOffer,
+  JOIN: CallJoin,
+  ESTABLISH: CallEstablish
 };
+

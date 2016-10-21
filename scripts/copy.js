@@ -23,7 +23,7 @@ let toCopy = [
   './README.md',
   './server/asset/index.html',
   './server/lib',
-  './server/shared',
+  './server/shared/types',
   './server/run.js',
   './server/Server.js'
 ];

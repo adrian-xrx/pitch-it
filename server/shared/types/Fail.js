@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,22 +14,16 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@import (reference) "../../less/common/colors.less";
-.logo {
-  position: absolute;
-  height: 40px;
-  line-height: 40px;
-  top: 5px;
-  font-size: 20px;
-  font-weight: bold;
-  color: @primary;
-  
-  &.large {
-    top: 200px;
-    left: 30px;
-    line-height: 70px;
-    height: 70px;
-    font-size: 60px;
+'use strict';
+
+class Fail {
+  static get TYPE() {
+    return 'fail';
+  }
+  constructor() {
   }
 }
+
+module.exports = {
+  FAIL: Fail
+};

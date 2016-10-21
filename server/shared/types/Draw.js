@@ -16,34 +16,23 @@
  */
 'use strict';
 
-import React from 'react';
-
-import '../../less/elements/button.less';
-
-import './welcomeBox.less';
-
-export default class WelcomeBox extends React.Component {
+class DrawDrawing {
+  static get TYPE() {
+    return 'draw.drawing';
+  }
   constructor() {
-    super();
-  }
-  
-  onCreateClicked(item) {
-    if (this.props.onCreateClicked) {
-      this.props.onCreateClicked();
-    } else {
-      console.log('No create Whiteboard click handler');
-    }
-  }
-  
-  render() {
-    return (
-      <div className="welcome-box">
-        <div className="welcome-text">
-          Welcome to pitch it.<br />
-          Get started with your first whiteboard
-        </div>
-        <button className="btn btn-large" onClick={this.onCreateClicked.bind(this)}>Create Whiteboard</button>
-      </div>
-    );
   }
 }
+
+class DrawClear {
+  static get TYPE() {
+    return 'draw.clear';
+  }
+  constructor() {
+  }
+}
+
+module.exports = {
+  DRAWING: DrawDrawing,
+  CLEAR: DrawClear
+};

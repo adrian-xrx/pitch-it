@@ -19,14 +19,15 @@
 const crypto = require('crypto');
 const Call = require('./Call');
 const logger = require('./Logger').getInstance();
-const message_types = require('../shared/Message_Types');
+const TypeCall = require('../shared/types/Call');
+const TypeFail = require('../shared/types/Fail');
 
 class CallManager {
   constructor(socketManager) {
     this._activeCalls = {};
     this._socketManager = socketManager;
     
-    this._socketManager.registerMessageHandler(message_types.CALL_JOIN, this._joinCall.bind(this));
+    this._socketManager.registerMessageHandler(TypeCall.JOIN.TYPE, this._joinCall.bind(this));
   }
   
   registerCall(owner) {
@@ -49,7 +50,7 @@ class CallManager {
       call.establish();
     } else {
       logger.warn('Call does not exist -> ' + msg.callID);
-      this._socketManager.sendTo(origin, message_types.FAIL, {
+      this._socketManager.sendTo(origin, TypeFail.FAIL.TYPE, {
         reason: 'Call does not exist -> ' + msg.callID
       });
     }

@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,25 +14,7 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@import (reference) "../../less/common/colors.less";
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-
-.main {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  background-color: @white;
-}
-
-.hidden {
-  display: none;
-}
+'use strict';
+const assert = require('assert');
+const TypeFail = require('../../../server/shared/types/Fail');

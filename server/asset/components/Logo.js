@@ -15,7 +15,10 @@
  * 
  */
 
-'use strict';
+import FacadeElement from '../lib/FacadeElement';
 
-const assert = require('assert');
-const message_types = require('../../server/shared/Message_Types');
+export default class Logo extends FacadeElement {
+  constructor(classes=[]) {
+    super(null, ['logo'].concat(classes), 'pitch it.');
+  }
+}

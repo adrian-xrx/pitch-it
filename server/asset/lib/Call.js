@@ -16,7 +16,9 @@
  */
 
 'use strict';
-import message_types from '../../shared/Message_Types';
+import TypeCall from '../../shared/types/Call';
+import TypeRTC from '../../shared/types/RTC';
+import TypeFail from '../../shared/types/Fail';
 import config from '../config';
 
 export default class Call {
@@ -44,18 +46,18 @@ export default class Call {
     this._connection.onaddstream = this._onRemoteStreamAdded.bind(this);
     this._connection.onicecandidate = this._onIceCandidateAdded.bind(this);
     
-    this._socket.registerMessageHandler(message_types.RTC_ICE_CANDIDATE, this._gotIceCandidate.bind(this));
-    this._socket.registerMessageHandler(message_types.RTC_OFFER, this._gotOffer.bind(this));
-    this._socket.registerMessageHandler(message_types.RTC_ANSWER, this._gotAnswer.bind(this));
+    this._socket.registerMessageHandler(TypeRTC.ICE_CANDIDATE.TYPE, this._gotIceCandidate.bind(this));
+    this._socket.registerMessageHandler(TypeRTC.OFFER.TYPE, this._gotOffer.bind(this));
+    this._socket.registerMessageHandler(TypeRTC.ANSWER.TYPE, this._gotAnswer.bind(this));
     
-    this._socket.registerMessageHandler(message_types.CALL_CREATE, this._createCall.bind(this));
-    this._socket.registerMessageHandler(message_types.CALL_ESTABLISH, this._establishCall.bind(this));
-    this._socket.registerMessageHandler(message_types.FAIL, this._failed.bind(this));
+    this._socket.registerMessageHandler(TypeCall.CREATE.TYPE, this._createCall.bind(this));
+    this._socket.registerMessageHandler(TypeCall.ESTABLISH.TYPE, this._establishCall.bind(this));
+    this._socket.registerMessageHandler(TypeFail.FAIL.TYPE, this._failed.bind(this));
     
     // create call if target is defined
     if (target) {
       this._socket.send({
-        type: message_types.CALL_CREATE,
+        type: TypeCall.CREATE.TYPE,
         target: target
       }); 
     }
@@ -72,7 +74,7 @@ export default class Call {
   join() {
     console.log('Join call ' + this._callID);
     this._socket.send({
-      type: message_types.CALL_JOIN,
+      type: TypeCall.JOIN.TYPE,
       callID: this._callID
     });
   }
@@ -80,7 +82,7 @@ export default class Call {
   _onIceCandidateAdded(evt) {
     if (evt && evt.candidate) {
       this._socket.send({
-        type: message_types.RTC_ICE_CANDIDATE,
+        type: TypeRTC.ICE_CANDIDATE.TYPE,
         callID: this._callID,
         candidate: evt.candidate
       });
@@ -113,7 +115,7 @@ export default class Call {
       this._connection.createOffer((offer) => {
         this._connection.setLocalDescription(new Call.SESSION_DESCRIPTION(offer), () => {
           this._socket.send({
-            type: message_types.RTC_OFFER,
+            type: TypeRTC.OFFER.TYPE,
             callID: this._callID,
             offer: offer
           });
@@ -130,7 +132,7 @@ export default class Call {
           this._connection.createAnswer((answer) => {
             this._connection.setLocalDescription(new Call.SESSION_DESCRIPTION(answer), () => {
               this._socket.send({
-                type: message_types.RTC_ANSWER,
+                type: TypeRTC.ANSWER.TYPE,
                 callID: this._callID,
                 answer: answer
               });

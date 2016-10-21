@@ -19,7 +19,9 @@
 const WebSocketServer = require('ws').Server;
 const SocketCache = require('./SocketCache');
 const logger = require('./Logger').getInstance();
-const message_types = require('../shared/Message_Types');
+const TypeFail = require('../shared/types/Fail');
+const TypeUsers = require('../shared/types/Users');
+const TypeAuth = require('../shared/types/Authentication');
 
 class SocketManager {
   constructor(server) {
@@ -69,7 +71,7 @@ class SocketManager {
   }
   
   sendErrorTo(targets, reason) {
-    this.sendTo(targets, message_types.FAIL, {reason: reason});
+    this.sendTo(targets, TypeFail.FAIL.TYPE, {reason: reason});
   }
   
   exist(socketId) {
@@ -101,7 +103,7 @@ class SocketManager {
       };
     });
     contacts.forEach((contact) => {
-      this.sendTo(contact.id, message_types.CONTACT_LIST, {
+      this.sendTo(contact.id, TypeUsers.LIST.TYPE, {
         contacts: contacts.filter((item) => {
           return (item.id !== contact.id); 
         })
@@ -111,7 +113,7 @@ class SocketManager {
 
   assignUser(socket, user) {
     this._socketCache.get(socket).user = user;
-    this.sendTo(socket, message_types.REGISTER, {
+    this.sendTo(socket, TypeAuth.REGISTER.TYPE, {
       user: {
         id: socket,
         name: user

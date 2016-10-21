@@ -15,18 +15,13 @@
  * 
  */
 
-'use strict';
-import React from 'react';
+import FacadeView from '../lib/FacadeView';
+import LoginBox from '../components/LoginBox';
 
-import './logo.less';
-
-export default class Logo extends React.Component {
-  render() {
-    let classes = 'logo';
-    if (this.props.large === 'true') {
-      classes += ' large';
-    }
-    return (<div className={classes}>pitch it</div>)
+export default class Login extends FacadeView {
+  constructor(domTarget) {
+    super(domTarget);
+    this._root.addClass('login-view');
+    super.appendChild(new LoginBox());
   }
 }
-

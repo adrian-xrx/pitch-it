@@ -12,9 +12,6 @@ module.exports = {
   debug: true,
   devServer: {
     keepAlive: true,
-    contentBase: './build/server/asset/',
-    proxy: {
-      '*': 'http://localhost'
-    }
+    contentBase: './dist/server/asset/'
   }
 }

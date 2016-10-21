@@ -15,13 +15,14 @@
  * 
  */
 
-'use strict';
-import React from 'react';
-import Logo from '../logo/Logo';
-import './header.less';
+import FacadeElement from '../lib/FacadeElement';
+import Logo from './Logo';
+import FormInput from './FormInput';
 
-export default class Header extends React.Component {
-  render() {
-    return (<div className="header"><Logo /><div className="user">{(this.props.user) ? this.props.user.name : ''}</div></div>)
+export default class LoginBox extends FacadeElement {
+  constructor() {
+    super(null, ['login-box']);
+    this.appendChild(new Logo());
+    this.appendChild(new FormInput('username', null, 'Login'));
   }
 }

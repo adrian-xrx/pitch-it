@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,36 +14,7 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@import (reference) "../common/colors.less";
 
-.btn {
-  color: @black;
-  font-weight: bold;
-  font-size: 11px;
-  border: none;
-  background-color: @primary;
-  margin: 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-
-  &.btn-large {
-    font-size: 12px;
-    padding: 10px 20px;
-  }
-  
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: @primary_hover;
-  }
-  &:active {
-    outline: 2px solid @primary_hover;
-  }
-
-  &.large {
-    width: 200px;
-    height: 50px;
-    font-size: 15px;
-  }
-}
+'use strict';
+const assert = require('assert');
+const TypeCall = require('../../../server/shared/types/Call');

@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,30 +14,7 @@
  * be found in the LICENSE file in the root directory
  * 
  */
- 
-@import (reference) "../../less/common/colors.less";
 
-.draw {
-  
-  position: relative;
-  top: 60px;
-  width: 100%;
-  height: calc(~"100% - 60px");
-
-  .clear-button {
-    position: absolute;
-    z-index: 2;
-    margin: 0px;
-    right: 208px;
-    top: 2px;
-  }
-
-  .draw-canvas {
-    position: relative;
-    left: 10px;
-    z-index: 1;
-    border: 2px solid @light_grey;
-    background-color: @white;
-  }
-
-}
+'use strict';
+const assert = require('assert');
+const TypeUsers = require('../../../server/shared/types/Users');

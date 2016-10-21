@@ -15,38 +15,6 @@
  * 
  */
 
-@import (reference) "../../less/common/colors.less";
-
-.participant-list {
-  @pl-width: 200px;
-
-  position: absolute;
-  top: 60px;
-  width: @pl-width;
-  height: calc(~"100% - 70px");
-  padding: 0px 5px;
-  box-sizing: border-box;
-  right: 0;
-
-  .participant-list-header {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      margin: 5px 0px;
-
-      &.empty-marker {
-        color: @dark_grey;
-      }
-    }
-  }
-
-  .input-field {
-    width: 135px;
-  }
-}
+'use strict';
+const assert = require('assert');
+const TypeRTC = require('../../../server/shared/types/RTC');
