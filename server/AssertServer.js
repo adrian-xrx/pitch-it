@@ -29,7 +29,7 @@ const RTC = require('./shared/types/RTC');
 const Draw = require('./shared/types/Draw');
 const Authentication = require('./shared/types/Authentication');
 
-class Server {
+class AssetServer {
   constructor(config) {
     this._app = express();
 
@@ -162,4 +162,4 @@ class Server {
   }
 }
 
-module.exports = Server;
+module.exports = AssetServer;

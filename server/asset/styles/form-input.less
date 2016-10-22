@@ -14,42 +14,29 @@
  * be found in the LICENSE file in the root directory
  * 
  */
-'use strict';
 
-class AuthorizationRegister {
-  static get TYPE() {
-    return 'user.register'
+ @import (reference) "./colors.less";
+
+.form-input {
+
+  margin-top: 5px;
+  
+  label, input {
+    display: block;
+    margin: 1px 0px;
   }
 
-  constructor(username, password) {
-    this._username = username;
-    this._password = password;
-  }
+  input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid @color-secondary;
+    padding: 2px 5px;
+    font: "Josefin Sans", sans-serif;
 
-  static deserialize(msg) {
-    let parsed = JSON.parse(msg);
-    return new AuthorizationRegister(username, password);
-  }
-
-  getUser() {
-    return this._username;
-  }
-
-  getPassword() {
-    return this._password;
-  }
-
-  serialize() {
-    JSON.stringify({
-      type: AuthorizationRegister.TYPE,
-      data: {
-        user: this.getUser(),
-        password: this.getPassword()
-      }
-    });
+    &:focus {
+      outline: none;
+      border-color: @color-acent;
+    }
   }
 }
-
-module.exports = {
-  REGISTER: AuthorizationRegister
-};

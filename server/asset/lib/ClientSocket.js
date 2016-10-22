@@ -59,7 +59,7 @@ export default class ClientSocket {
   }
   
   send(msg) {
-    this._socket.send(JSON.stringify(msg));
+    this._socket.send(msg.serialize());
   }
   
   registerMessageHandler(type, handler) {

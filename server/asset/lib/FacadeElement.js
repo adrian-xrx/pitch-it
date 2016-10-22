@@ -22,6 +22,7 @@ export default class FacadeElement {
     this._classes = classes || [];
     this._content = content || '';
     this._children = [];
+    this._events = {};
   }
 
   appendChild(child) {
@@ -46,9 +47,28 @@ export default class FacadeElement {
     }
   }
 
+  on(event, handle) {
+    if (event && !this._events[event]) {
+      this._events[event] = handle;
+    } else {
+      console.warn('Try to overwrite event. Cancel');
+    }
+  }
+
+  getValue() {
+    return this._content;
+  }
+
   _attachClasses(elm) {
     this._classes.forEach((className) => {
       elm.classList.add(className);
+    });
+  }
+
+  _attachEvents(elm) {
+    let events = Object.keys(this._events);
+    events.forEach((e) => {
+      elm.addEventListener(e, this._events[e]);
     });
   }
 

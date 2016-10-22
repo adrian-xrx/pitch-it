@@ -14,11 +14,14 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+
 'use strict';
-const AssetServer = require('./AssetServer');
+
+const Server = require('./Server');
+const logger = require('../server/lib/Logger').getInstance();
+
 const pkg = require('../package.json');
 const fs = require('fs');
-const logger = require('./lib/Logger').getInstance();
 
 function validateConfig(config) {
   let retVal = true;
@@ -29,15 +32,16 @@ function validateConfig(config) {
 }
 
 function launch(config) {
-  if (validateConfig(config.assetServer)) {
-    new AssetServer(config.assetServer);
+  if (validateConfig(config.server)) {
+    let srv = new Server(config.server)
+    srv.launch();
   } else {
     console.log('INVALID CONFIG\nEXIT');
   }
 }
 
 console.log('\n-------------------------------------------------');
-console.log('  ' + pkg.name);
+console.log('  pitch it.');
 console.log('    v' + pkg.version);
 console.log('-------------------------------------------------\n');
 let config;

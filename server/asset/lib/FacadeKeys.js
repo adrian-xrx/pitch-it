@@ -14,42 +14,9 @@
  * be found in the LICENSE file in the root directory
  * 
  */
-'use strict';
 
-class AuthorizationRegister {
-  static get TYPE() {
-    return 'user.register'
-  }
-
-  constructor(username, password) {
-    this._username = username;
-    this._password = password;
-  }
-
-  static deserialize(msg) {
-    let parsed = JSON.parse(msg);
-    return new AuthorizationRegister(username, password);
-  }
-
-  getUser() {
-    return this._username;
-  }
-
-  getPassword() {
-    return this._password;
-  }
-
-  serialize() {
-    JSON.stringify({
-      type: AuthorizationRegister.TYPE,
-      data: {
-        user: this.getUser(),
-        password: this.getPassword()
-      }
-    });
+export default class FacadeKeys {
+  static get ENTER() {
+    return 13;
   }
 }
-
-module.exports = {
-  REGISTER: AuthorizationRegister
-};

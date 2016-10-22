@@ -14,42 +14,16 @@
  * be found in the LICENSE file in the root directory
  * 
  */
-'use strict';
 
-class AuthorizationRegister {
-  static get TYPE() {
-    return 'user.register'
+import AuthType from '../../shared/types/Authentication';
+
+export default class AuthenticationApi {
+  constructor(clientSocket) {
+    this._clientSocket = clientSocket; 
   }
 
-  constructor(username, password) {
-    this._username = username;
-    this._password = password;
-  }
-
-  static deserialize(msg) {
-    let parsed = JSON.parse(msg);
-    return new AuthorizationRegister(username, password);
-  }
-
-  getUser() {
-    return this._username;
-  }
-
-  getPassword() {
-    return this._password;
-  }
-
-  serialize() {
-    JSON.stringify({
-      type: AuthorizationRegister.TYPE,
-      data: {
-        user: this.getUser(),
-        password: this.getPassword()
-      }
-    });
+  register(username, password) {
+    let msg = new AuthType.REGISTER(username, password);
+    this._clientSocket.send(msg);
   }
 }
-
-module.exports = {
-  REGISTER: AuthorizationRegister
-};

@@ -21,11 +21,17 @@ import FacadeRouter from './lib/FacadeRouter';
 import FacadeView from './lib/FacadeView';
 import Login from './views/Login';
 import FacadeElement from './lib/FacadeElement';
+import AuthenticationApi from './lib/AuthenticationApi';
+import ClientSocket from './lib/ClientSocket';
 
-let login = new Login('#render-container');
+let clientSocket = new ClientSocket('localhost', 1234);
+
+let authApi = new AuthenticationApi(clientSocket);
+
+let login = new Login('#render-container', authApi);
 
 let defaultView2 = new FacadeView('#render-container');
-let elm2 = new FacadeElement(null, ['my-class'], 'My Fancy element');
+let elm2 = new FacadeElement(undefined, ['my-class'], 'My Fancy element');
 defaultView2.appendChild(elm2);
 
 let router = new FacadeRouter({
@@ -37,7 +43,7 @@ let router = new FacadeRouter({
   },
   "default": {
     onEnter: () => {
-      location.hash = "login";
+      router.redirect('login');
     }
   }
 });

@@ -19,9 +19,19 @@ import FacadeView from '../lib/FacadeView';
 import LoginBox from '../components/LoginBox';
 
 export default class Login extends FacadeView {
-  constructor(domTarget) {
+  constructor(domTarget, authApi) {
     super(domTarget);
     this._root.addClass('login-view');
-    super.appendChild(new LoginBox());
+    this._authApi = authApi;
+    this._loginBox = new LoginBox();
+    this._loginBox.onLogin((username, event) => this.authenticate(username));
+
+    super.appendChild(this._loginBox);
+  }
+
+  authenticate(username) {
+    if (username) {
+      this._authApi.register(username);
+    }
   }
 }

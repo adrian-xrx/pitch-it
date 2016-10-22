@@ -16,13 +16,33 @@
  */
 
 import FacadeElement from '../lib/FacadeElement';
+import FacadeKeys from '../lib/FacadeKeys';
 import Logo from './Logo';
 import FormInput from './FormInput';
 
 export default class LoginBox extends FacadeElement {
   constructor() {
-    super(null, ['login-box']);
+    super(undefined, ['login-box']);
     this.appendChild(new Logo());
-    this.appendChild(new FormInput('username', null, 'Login'));
+    let formInput = new FormInput('username', undefined, 'login');
+    formInput.on('keyup', (event) => {
+      switch(event.keyCode) {
+        case FacadeKeys.ENTER:
+          this._login(formInput.getValue(), event);
+      }
+    });
+    this.appendChild(formInput);
+  }
+
+  _login(username, event) {
+    if (this._loginCallback) {
+      this._loginCallback(username, event);
+    }
+  }
+
+  onLogin(callback) {
+    if (callback) {
+      this._loginCallback = callback;
+    }
   }
 }

@@ -19,6 +19,6 @@ import FacadeElement from '../lib/FacadeElement';
 
 export default class Logo extends FacadeElement {
   constructor(classes=[]) {
-    super(null, ['logo'].concat(classes), 'pitch it.');
+    super(undefined, ['logo'].concat(classes), 'pitch it.');
   }
 }

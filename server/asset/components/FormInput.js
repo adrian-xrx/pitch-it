@@ -18,23 +18,28 @@
 import FacadeElement from '../lib/FacadeElement';
 
 export default class FormInput extends FacadeElement {
-  constructor(id, classes, label, value) {
-    super(id, classes, value);
+  constructor(id, classes=[], label, value) {
+    super(id, ['form-input'].concat(classes), value);
     this._label = label;
+    this._input = document.createElement('input');
+    this._input.id = this._id;
+    this._input.name =this._id;
+    this._input.value = this._content;
+  }
+
+  getValue() {
+    return this._input.value;
   }
 
   render() {
     let elm = document.createElement('div');
     this._attachClasses(elm);
+    this._attachEvents(elm);
     let labelElm = document.createElement('label');
     labelElm.setAttribute('for', this._id);
     labelElm.textContent = this._label;
-    let inputElm = document.createElement('input');
-    inputElm.id = this._id;
-    inputElm.name =this._id;
-    inputElm.value = this._content;
     elm.appendChild(labelElm);
-    elm.appendChild(inputElm);
+    elm.appendChild(this._input );
     return elm;
   }
 }

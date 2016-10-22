@@ -14,7 +14,8 @@
     "build": "npm run clean && npm run copy && webpack --config ./webpack.config.js && lessc ./server/asset/styles/main.less ./dist/server/asset/main.css",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js",
     "test": "mocha ./test --recursive",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive",
+    "start-new": "node ./pitch-it/launch.js"
   },
   "dependencies": {
     "express": "4.14.0",
