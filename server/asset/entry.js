@@ -34,7 +34,7 @@ let defaultView2 = new FacadeView('#render-container');
 let elm2 = new FacadeElement(undefined, ['my-class'], 'My Fancy element');
 defaultView2.appendChild(elm2);
 
-let router = new FacadeRouter({
+var router = new FacadeRouter({
   "login": {
     view: login
   },
@@ -43,7 +43,7 @@ let router = new FacadeRouter({
   },
   "default": {
     onEnter: () => {
-      router.redirect('login');
+      location.hash = 'login';
     }
   }
 });

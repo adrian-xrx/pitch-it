@@ -19,12 +19,15 @@
 const http = require('http');
 const https = require('https');
 const WebSocketServer = require('ws').Server;
-const logger = require('../server/lib/logger').getInstance();
+const logger = require('../server/lib/Logger').getInstance();
+const Message = require('../shared/Message');
+const Authenticator = require('./lib/Authenticator');
 
 class Server {
   constructor(config) {
     this._server;
     this._port = config.port;
+    this._authenticator = new Authenticator();
     if (config.tls) {
       try {
         let key = fs.readFileSync(keyPath).toString();
@@ -58,7 +61,7 @@ class Server {
   _setupSocketServer(wss) {
     wss.on('connection', (ws) => {
       ws.on('message', (msg) => {
-        logger.debug('Got Message ' + msg);
+        this._handleMessage(ws, msg);
       });
 
       ws.on('close', (msg) => {
@@ -67,6 +70,19 @@ class Server {
 
       logger.info('New socket connected. Active connections: ' + wss.clients.length);
     });
+  }
+
+  _handleMessage(socket, msg) {
+    msg = Message.deserialize(msg);
+    logger.debug('Got Message ' + msg.type);
+    switch(msg.type) {
+      case Message.AUTH_REGISTER:
+        this._authenticator.authenticate(socket, msg);
+        break;
+      default:
+        logger.info('Unkown message ' + msg.type);
+        break;
+    }
   }
 }
 

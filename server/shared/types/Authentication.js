@@ -26,9 +26,8 @@ class AuthorizationRegister {
     this._password = password;
   }
 
-  static deserialize(msg) {
-    let parsed = JSON.parse(msg);
-    return new AuthorizationRegister(username, password);
+  static parse(msg) {
+    return new AuthorizationRegister(msg.username, msg.password);
   }
 
   getUser() {

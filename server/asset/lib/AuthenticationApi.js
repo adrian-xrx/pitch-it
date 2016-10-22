@@ -15,15 +15,26 @@
  * 
  */
 
-import AuthType from '../../shared/types/Authentication';
+import Message from '../../../shared/Message';
 
 export default class AuthenticationApi {
   constructor(clientSocket) {
     this._clientSocket = clientSocket; 
+    
+    this._clientSocket.on(Message.AUTH_REGISTER, (msg) => this.registerSuccess(msg));
   }
 
   register(username, password) {
-    let msg = new AuthType.REGISTER(username, password);
+    let msg = new Message(Message.AUTH_REGISTER, {
+      username: username,
+      password: password
+    });
     this._clientSocket.send(msg);
+  }
+
+  registerSuccess(msg) {
+    let token = msg.data.token;
+    console.log('Register successful');
+    // todo store token to cookie;
   }
 }

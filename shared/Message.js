@@ -14,4 +14,44 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+
 'use strict';
+
+class Message {
+  static get AUTH_REGISTER() {
+    return 'auth.register';
+  }
+
+  constructor(type, data, token) {
+    this._type = type;
+    this._data = data;
+    this._token = token;
+  }
+
+  get type() {
+    return this._type;
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  get token() {
+    return this._token;
+  }
+
+  static deserialize(raw) {
+    let parsed = JSON.parse(raw);
+    return new Message(parsed.type, parsed.data);
+  }
+
+  serialize() {
+    return JSON.stringify({
+      type: this._type,
+      data: this._data,
+      token: this._token
+    });
+  }
+}
+
+module.exports = Message;

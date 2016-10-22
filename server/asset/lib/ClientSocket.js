@@ -16,6 +16,9 @@
  */
 
 'use strict';
+
+import Message from '../../../shared/Message';
+
 export default class ClientSocket {
   constructor(host, port, connected, disconnected) {
     this._messageHandlers = {};
@@ -26,6 +29,7 @@ export default class ClientSocket {
     this._socket.onopen = connected;
     this._socket.onclose = disconnected;
     this._socket.onmessage = this._handleMessage.bind(this);
+    this._callbacks = {};
   }
   
   _isTLS() {
@@ -47,25 +51,23 @@ export default class ClientSocket {
   }
   
   _handleMessage(msg) {
-    msg = JSON.parse(msg.data);
-    if (this._messageHandlers[msg.type]) {
-      let handlers = this._messageHandlers[msg.type];
-      handlers.forEach((handler) => {
-        handler(msg.data);
-      });
+    msg = Message.deserialize(msg);
+    if (this._callbacks[type]) {
+      this._callbacks[type](msg);
     } else {
-      console.warn('No handler found for type ' + msg.type);
+      console.info('No handler found for ', msg.type);
     }
   }
   
   send(msg) {
     this._socket.send(msg.serialize());
   }
-  
-  registerMessageHandler(type, handler) {
-    if (!this._messageHandlers[type]) {
-      this._messageHandlers[type] = [];
+
+  on(type, handle) {
+    if (!this._callbacks[type]) {
+      this._callbacks[type] = handle;
+    } else {
+      console.warn('Try to overwrite handler for ', type);
     }
-    this._messageHandlers[type].push(handler);
   }
 }

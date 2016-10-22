@@ -54,8 +54,4 @@ export default class FacadeRouter {
       throw new Error('Route ' + routeName + ' already exists');
     }
   }
-
-  redirect(routeName) {
-    location.hash = '#' + routeName;
-  }
 }
