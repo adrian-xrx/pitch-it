@@ -18,6 +18,7 @@
 'use strict';
 
 import Message from '../../../shared/Message';
+import CookieApi from './CookieApi';
 
 export default class ClientSocket {
   constructor(host, port, connected, disconnected) {
@@ -51,15 +52,19 @@ export default class ClientSocket {
   }
   
   _handleMessage(msg) {
-    msg = Message.deserialize(msg);
-    if (this._callbacks[type]) {
-      this._callbacks[type](msg);
+    msg = Message.deserialize(msg.data);
+    if (this._callbacks[msg.type]) {
+      this._callbacks[msg.type](msg);
     } else {
       console.info('No handler found for ', msg.type);
     }
   }
   
   send(msg) {
+    let token = CookieApi.getValue('token'); 
+    if (token) {
+      msg.token = token;
+    }
     this._socket.send(msg.serialize());
   }
 

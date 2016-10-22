@@ -22,10 +22,10 @@ class Message {
     return 'auth.register';
   }
 
-  constructor(type, data, token) {
+  constructor(type, data) {
     this._type = type;
     this._data = data;
-    this._token = token;
+    this._token;
   }
 
   get type() {
@@ -38,6 +38,10 @@ class Message {
 
   get token() {
     return this._token;
+  }
+
+  set token(token) {
+    this._token = token;
   }
 
   static deserialize(raw) {

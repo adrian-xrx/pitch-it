@@ -15,16 +15,15 @@
  * 
  */
 
- .main-view {
-   position: relative;
-   top: 0; 
-   left: 0;
-   height: 100%;
-   width: 100%;
-   
-   .logo {
-     position: absolute;
-     top: 10px;
-     left: 10px;
-   }
- }
+import FacadeElement from '../lib/FacadeElement';
+
+export default class UserMenu extends FacadeElement {
+  constructor(id, classes, content) {
+    super(id, classes, content);
+  }
+
+  update(content) {
+    // should update the dom element
+    // may define a default for that in FacadeElement
+  }
+}

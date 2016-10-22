@@ -14,3 +14,23 @@
  * be found in the LICENSE file in the root directory
  * 
  */
+
+import FacadeView from '../lib/FacadeView';
+import Logo from '../components/Logo';
+import UserMenu from '../components/UserMenu';
+import CookieApi from '../lib/CookieApi';
+
+export default class Main extends FacadeView {
+  constructor(domTarget) {
+    super(domTarget);
+    this._root.addClass('main-view');
+    let token = CookieApi.getValue('token');
+    let username = (token) ? token.split('.')[1] : "";
+    super.appendChild(new Logo());
+    super.appendChild(new UserMenu(undefined, undefined, username));
+  }
+
+  update(changes) {
+    // todo - update view according to the changes
+  }
+}

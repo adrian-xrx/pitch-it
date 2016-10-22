@@ -20,6 +20,7 @@
 import FacadeRouter from './lib/FacadeRouter';
 import FacadeView from './lib/FacadeView';
 import Login from './views/Login';
+import Main from './views/Main';
 import FacadeElement from './lib/FacadeElement';
 import AuthenticationApi from './lib/AuthenticationApi';
 import ClientSocket from './lib/ClientSocket';
@@ -30,16 +31,15 @@ let authApi = new AuthenticationApi(clientSocket);
 
 let login = new Login('#render-container', authApi);
 
-let defaultView2 = new FacadeView('#render-container');
-let elm2 = new FacadeElement(undefined, ['my-class'], 'My Fancy element');
-defaultView2.appendChild(elm2);
+let main = new Main('#render-container');
 
 var router = new FacadeRouter({
   "login": {
     view: login
   },
   "main": {
-    view: defaultView2
+    view: main,
+    authentication: true
   },
   "default": {
     onEnter: () => {

@@ -24,20 +24,21 @@ class Authenticator {
     this._tokenCache = {};
   }
 
-  generateToken() {
+  generateToken(username) {
     let _set = "abcdefghiljklmnopqrstuvwxyz0123456789";
     let token = "";
     for (let i = 0; i < 30; i++) {
       let rand = Math.floor(Math.random() * _set.length);
       token += _set[rand];
     }
+    token += '.' + username;
     return token;
   }
 
-  authenticate(socket, username) {
-    let token = this.generateToken();
+  authenticate(socket, msg) {
+    let token = this.generateToken(msg.data.username);
     this._tokenCache[token] = {
-      user: username,
+      user: msg.data.username,
       expire: Date.now() + 3600000
     };
     let message = new Message(Message.AUTH_REGISTER, {token: token});

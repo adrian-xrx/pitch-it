@@ -15,16 +15,27 @@
  * 
  */
 
- .main-view {
-   position: relative;
-   top: 0; 
-   left: 0;
-   height: 100%;
-   width: 100%;
-   
-   .logo {
-     position: absolute;
-     top: 10px;
-     left: 10px;
-   }
- }
+'use strict';
+
+export default class CookieApi {
+
+  static getValue(name) {
+    let cookies = document.cookie.split(';');
+    let cookie = cookies.pop().trim();
+    while (cookie) {
+      if (cookie.indexOf(name) === 0) {
+        return cookie.split('=')[1];
+      }
+      cookie = cookies.pop().trim();
+    }
+  }
+
+  static createCookie(name, value) {
+    document.cookie = name + '=' + value;
+  }
+
+  static removeCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+  } 
+
+}

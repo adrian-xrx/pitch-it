@@ -16,6 +16,7 @@
  */
 
 import Message from '../../../shared/Message';
+import CookieApi from './CookieApi';
 
 export default class AuthenticationApi {
   constructor(clientSocket) {
@@ -35,6 +36,7 @@ export default class AuthenticationApi {
   registerSuccess(msg) {
     let token = msg.data.token;
     console.log('Register successful');
-    // todo store token to cookie;
+    CookieApi.createCookie('token', token);
+    location.hash = 'main';
   }
 }

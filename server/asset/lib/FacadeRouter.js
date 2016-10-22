@@ -16,6 +16,7 @@
  */
 
 import FacadeView from './FacadeView';
+import CookieApi from './CookieApi';
 
 export default class FacadeRouter {
   constructor (routes) {
@@ -30,17 +31,21 @@ export default class FacadeRouter {
     if (!route || !hash) {
       route = this._routes['default'];
     }
-    
-    if (route.view) {
-      if (route.view instanceof FacadeView) {
-        route.view.render();
-      } else {
-        throw new Error('View is not a FacadeView');
-      }
-    }
 
-    if (route.onEnter) {
-      route.onEnter();
+    if (!route.authentication || (CookieApi.getValue('token'))) {
+      if (route.view) {
+        if (route.view instanceof FacadeView) {
+          route.view.render();
+        } else {
+          throw new Error('View is not a FacadeView');
+        }
+      }
+
+      if (route.onEnter) {
+        route.onEnter();
+      }
+    } else {
+      location.hash = "";
     }
   }
   
