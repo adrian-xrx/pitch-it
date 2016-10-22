@@ -25,7 +25,7 @@ let toCopy = [
   './server/lib',
   './server/shared/types',
   './server/run.js',
-  './server/Server.js'
+  './server/AssetServer.js'
 ];
 
 function createPath(toCreate) {

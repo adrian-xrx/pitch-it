@@ -56,6 +56,6 @@ export default class FacadeRouter {
   }
 
   redirect(routeName) {
-    location.hash = routeName;
+    location.hash = '#' + routeName;
   }
 }
