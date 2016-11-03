@@ -22,16 +22,18 @@ import FacadeView from './lib/FacadeView';
 import Login from './views/Login';
 import Main from './views/Main';
 import FacadeElement from './lib/FacadeElement';
+import UserApi from './lib/UserApi';
 import AuthenticationApi from './lib/AuthenticationApi';
 import ClientSocket from './lib/ClientSocket';
 
-let clientSocket = new ClientSocket('localhost', 1234);
+let clientSocket = new ClientSocket('localhost', 1234, null, null, false);
 
+let userApi = new UserApi(clientSocket);
 let authApi = new AuthenticationApi(clientSocket);
 
 let login = new Login('#render-container', authApi);
 
-let main = new Main('#render-container');
+let main = new Main('#render-container', userApi);
 
 var router = new FacadeRouter({
   "login": {
@@ -43,7 +45,11 @@ var router = new FacadeRouter({
   },
   "default": {
     onEnter: () => {
-      location.hash = 'login';
+      if (authApi.isAuthenticated()) {
+        location.hash = 'main';
+      } else {
+        location.hash = 'login';        
+      }
     }
   }
-});
+}, authApi);

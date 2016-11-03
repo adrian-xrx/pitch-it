@@ -39,4 +39,8 @@ export default class AuthenticationApi {
     CookieApi.createCookie('token', token);
     location.hash = 'main';
   }
+
+  isAuthenticated() {
+    return typeof CookieApi.getValue('token') !== 'undefined'
+  }
 }

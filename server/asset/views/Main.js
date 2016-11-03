@@ -18,19 +18,47 @@
 import FacadeView from '../lib/FacadeView';
 import Logo from '../components/Logo';
 import UserMenu from '../components/UserMenu';
+import SideFrame from '../components/SideFrame';
 import CookieApi from '../lib/CookieApi';
+import List from '../components/List';
 
 export default class Main extends FacadeView {
-  constructor(domTarget) {
+  constructor(domTarget, userApi) {
     super(domTarget);
+    this._userApi =  userApi;
     this._root.addClass('main-view');
-    let token = CookieApi.getValue('token');
-    let username = (token) ? token.split('.')[1] : "";
     super.appendChild(new Logo());
-    super.appendChild(new UserMenu(undefined, undefined, username));
+    let username = this._parseUsername();
+    this._userMenu = new UserMenu(undefined, undefined, username);
+    this._userMenu.on('click', this._sideFrameUserList.bind(this));
+    super.appendChild(this._userMenu);
+    this._sideFrame = new SideFrame();
+    super.appendChild(this._sideFrame);
   }
 
-  update(changes) {
-    // todo - update view according to the changes
+  _parseUsername() {
+    let token = CookieApi.getValue('token');
+    return (token) ? token.split('.')[1] : "";
+  }
+
+  update() {
+    let username = this._parseUsername();
+    this._userMenu.update(username);
+  }
+
+  _sideFrameUserList() {
+    let userListItems = this._userApi.list().map((user) => {
+      user.label = user.name;
+      return user;
+    });
+    let userList = new List(undefined, undefined, userListItems);
+    userList.onChild('click', this._onUserAdd.bind(this));
+    this._sideFrame.setTitle('Users');
+    this._sideFrame.update([userList]);
+    this._sideFrame.show();
+  }
+
+  _onUserAdd(origEvent, item) {
+    console.log(item);
   }
 }

@@ -18,7 +18,7 @@
 'use strict';
 
 const Server = require('./Server');
-const logger = require('../server/lib/Logger').getInstance();
+const Logger = require('../server/lib/Logger');
 
 const pkg = require('../package.json');
 const fs = require('fs');
@@ -54,7 +54,7 @@ if (process.argv[2]) {
 
 if (config) {
   if (config.logLevel) {
-    logger.setLevel(config.logLevel);
+    Logger.level = config.logLevel;
   }
   launch(config);
 } else {

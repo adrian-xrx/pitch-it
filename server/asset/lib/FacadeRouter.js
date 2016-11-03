@@ -19,9 +19,10 @@ import FacadeView from './FacadeView';
 import CookieApi from './CookieApi';
 
 export default class FacadeRouter {
-  constructor (routes) {
+  constructor (routes, authApi) {
     window.onhashchange = this._onRouteChange.bind(this);
     this._routes = routes;
+    this._authApi = authApi;
     window.onhashchange();
   }
   
@@ -32,7 +33,7 @@ export default class FacadeRouter {
       route = this._routes['default'];
     }
 
-    if (!route.authentication || (CookieApi.getValue('token'))) {
+    if (!route.authentication || this._authApi.isAuthenticated()) {
       if (route.view) {
         if (route.view instanceof FacadeView) {
           route.view.render();

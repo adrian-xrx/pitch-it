@@ -20,6 +20,7 @@ const CONFIG = {
     host: 'localhost',
     port: 80
   },
+  tls: false,
   stun: [],
   turn: []
 };

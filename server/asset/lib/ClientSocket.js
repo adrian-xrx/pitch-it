@@ -21,20 +21,16 @@ import Message from '../../../shared/Message';
 import CookieApi from './CookieApi';
 
 export default class ClientSocket {
-  constructor(host, port, connected, disconnected) {
+  constructor(host, port, connected, disconnected, tlsEnabled=false) {
     this._messageHandlers = {};
     this._connectedCallback = connected;
     this._disconnectedCallback = disconnected;
-    let socketURL = (this._isTLS() ? 'wss' : 'ws') + '://' + host + ':' + port;
+    let socketURL = (tlsEnabled ? 'wss' : 'ws') + '://' + host + ':' + port;
     this._socket = new WebSocket(socketURL);
     this._socket.onopen = connected;
     this._socket.onclose = disconnected;
     this._socket.onmessage = this._handleMessage.bind(this);
     this._callbacks = {};
-  }
-  
-  _isTLS() {
-    return (window.location.protocol === 'https:')
   }
 
   _connected() {

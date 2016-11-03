@@ -20,8 +20,9 @@
 const Message = require('../../shared/Message');
 
 class Authenticator {
-  constructor() {
+  constructor(users) {
     this._tokenCache = {};
+    this._users = users;
   }
 
   generateToken(username) {
@@ -41,6 +42,7 @@ class Authenticator {
       user: msg.data.username,
       expire: Date.now() + 3600000
     };
+    this._users.add(msg.data.username);
     let message = new Message(Message.AUTH_REGISTER, {token: token});
     socket.send(message.serialize());
   }

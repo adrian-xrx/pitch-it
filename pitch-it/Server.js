@@ -19,15 +19,17 @@
 const http = require('http');
 const https = require('https');
 const WebSocketServer = require('ws').Server;
-const logger = require('../server/lib/Logger').getInstance();
+const Logger = require('./lib/Logger');
 const Message = require('../shared/Message');
 const Authenticator = require('./lib/Authenticator');
+const Users = require('./lib/Users');
 
 class Server {
   constructor(config) {
     this._server;
     this._port = config.port;
-    this._authenticator = new Authenticator();
+    this._users = new Users();
+    this._authenticator = new Authenticator(this._users);
     if (config.tls) {
       try {
         let key = fs.readFileSync(keyPath).toString();
@@ -39,22 +41,28 @@ class Server {
         };
         this._server = https.createServer(credentials);
       } catch (err) {
-        logger.error("Error reading https certificate or key: " + err);
+        Logger.error("Error reading https certificate or key: " + err);
       }
     } else {
       this._server = http.createServer();
     }
 
-    let wss = new WebSocketServer({
+    this._wss = new WebSocketServer({
       server: this._server,
       disableHixie: true
     });
-    this._setupSocketServer(wss);
+    this._setupSocketServer(this._wss);
   }
 
   launch() {
     this._server.listen(this._port, () => {
-      logger.info('Server is running at port ' + this._port);
+      Logger.info('Server is running at port ' + this._port);
+    });
+  }
+
+  _broadcast(broadcastFunction) {
+    this._wss.clients.forEach((client) => {
+      broadcastFunction(client);
     });
   }
 
@@ -65,22 +73,24 @@ class Server {
       });
 
       ws.on('close', (msg) => {
-        logger.info('Socket disconnected. Active connections: ' + wss.clients.length);
+        Logger.info('Socket disconnected. Active connections: ' + wss.clients.length);
       });
 
-      logger.info('New socket connected. Active connections: ' + wss.clients.length);
+      this._broadcast((socket) => this._users.list(socket));
+      Logger.info('New socket connected. Active connections: ' + wss.clients.length);
     });
   }
 
   _handleMessage(socket, msg) {
     msg = Message.deserialize(msg);
-    logger.debug('Got Message ' + msg.type);
+    Logger.debug('Got Message ' + msg.type);
     switch(msg.type) {
       case Message.AUTH_REGISTER:
         this._authenticator.authenticate(socket, msg);
+        this._broadcast((socket) => this._users.list(socket));
         break;
       default:
-        logger.info('Unkown message ' + msg.type);
+        Logger.info('Unkown message ' + msg.type);
         break;
     }
   }

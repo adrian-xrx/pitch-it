@@ -15,29 +15,42 @@
  * 
  */
 
-* {
-  box-sizing: border-box;
+@import (reference) "./shadow.less";
+
+@keyframes slide {
+  0%   {right: -450px}
+  90%  {right: -10px}
+  100% {right: -20px}
 }
 
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.base {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 14px;
-  position: absolute;
+.side-frame {
+  height: 100%;
+  width: 450px;
+  position: fixed;
   top: 0;
-  left: 0;
+  background-color: @color-white;
+  box-shadow: @basic-shadow;
+  padding: 20px 40px 20px 20px;
+  z-index: 2;
+  animation-name: slide;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+
+  &.hide {
+    right: -450px;
+  }
+
+  .side-frame-title {
+    font-size: 20px;
+  }
+}
+
+.backdrop {
   height: 100%;
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
-
-@import (less) "./logo.less";
-@import (less) "./login.less";
-@import (less) "./form-input.less";
-@import (less) "./user-menu.less";
-@import (less) "./side-frame.less";
-@import (less) "./list.less";
-@import (less) "./main.less";

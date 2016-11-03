@@ -22,6 +22,10 @@ class Message {
     return 'auth.register';
   }
 
+  static get USER_LIST() {
+    return 'user.list';
+  }
+
   constructor(type, data) {
     this._type = type;
     this._data = data;

@@ -15,29 +15,21 @@
  * 
  */
 
-* {
-  box-sizing: border-box;
-}
+import Message from '../../../shared/Message';
+import CookieApi from './CookieApi';
 
-body {
-  margin: 0;
-  padding: 0;
-}
+export default class UserApi {
+  constructor(clientSocket) {
+    this._userlist = [];
+    this._clientSocket = clientSocket; 
+    this._clientSocket.on(Message.USER_LIST, (msg) => this._gotList(msg));
+  }
 
-.base {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 14px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
+  _gotList(msg) {
+    this._userlist = msg.data.list;
+  }
 
-@import (less) "./logo.less";
-@import (less) "./login.less";
-@import (less) "./form-input.less";
-@import (less) "./user-menu.less";
-@import (less) "./side-frame.less";
-@import (less) "./list.less";
-@import (less) "./main.less";
+  list() {
+    return this._userlist;
+  }
+}

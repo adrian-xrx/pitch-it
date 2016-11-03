@@ -23,6 +23,7 @@ export default class FacadeElement {
     this._content = content || '';
     this._children = [];
     this._events = {};
+    this._compiled = undefined;
   }
 
   appendChild(child) {
@@ -34,16 +35,21 @@ export default class FacadeElement {
   }
 
   addClass(className) {
-    if (this._classes.indexOf(className) === -1) {
-      this._classes.push(className);      
+    if (className && this._classes.indexOf(className) === -1) {
+      this._classes.push(className);
+      if (this._compiled) {
+        this._compiled.classList.add(className);        
+      }
     }
   }
 
-  renderChild(child) {
-    if (child instanceof FacadeElement) {
-      return child.render();
-    } else {
-      return child;
+  removeClass(className) {
+    let index = this._classes.indexOf(className)
+    if (className && index !== -1) {
+      this._classes.splice(index, 1);
+      if (this._compiled) {
+        this._compiled.classList.remove(className);
+      }
     }
   }
 
@@ -55,31 +61,63 @@ export default class FacadeElement {
     }
   }
 
+  clear() {
+    this._children = [];
+    if (this._compiled) {
+      let firstChild = this._compiled.firstChild;
+      while (firstChild) {
+        firstChild.remove();
+        firstChild = this._compiled.firstChild;
+      }
+    }
+  }
+
   getValue() {
     return this._content;
   }
 
   _attachClasses(elm) {
     this._classes.forEach((className) => {
-      elm.classList.add(className);
+      if (className) {
+        elm.classList.add(className);
+      }
     });
   }
 
   _attachEvents(elm) {
     let events = Object.keys(this._events);
     events.forEach((e) => {
-      elm.addEventListener(e, this._events[e]);
+      if (e && this._events[e]) {
+        elm.addEventListener(e, this._events[e]);        
+      }
+    });
+  }
+
+    _renderChild(child) {
+    if (child instanceof FacadeElement) {
+      return child.render();
+    } else {
+      return child;
+    }
+  }
+
+  _renderChildren() {
+    this._children.forEach((child) => {
+      this._compiled.appendChild(this._renderChild(child));
     });
   }
 
   render() {
-    let defaultElm = document.createElement('div');
-    this._attachClasses(defaultElm);
-    defaultElm.id = this._id;
-    defaultElm.textContent = this._content;
-    this._children.forEach((child) => {
-      defaultElm.appendChild(this.renderChild(child));
-    });
-    return defaultElm;
+    this._compiled = document.createElement('div');
+    this._attachClasses(this._compiled);
+    this._attachEvents(this._compiled);
+    if (this._id && this._id.length > 0) {
+      this._compiled.id = this._id;      
+    }
+    if (this._content && this._compiled && this._content.length > 0) {
+      this._compiled.textContent = this._content;      
+    }
+    this._renderChildren();
+    return this._compiled;
   }
 }

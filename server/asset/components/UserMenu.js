@@ -19,11 +19,13 @@ import FacadeElement from '../lib/FacadeElement';
 
 export default class UserMenu extends FacadeElement {
   constructor(id, classes, content) {
-    super(id, classes, content);
+    super(id, ["user-menu"].concat(classes), content);
   }
 
   update(content) {
-    // should update the dom element
-    // may define a default for that in FacadeElement
+    this._content = content;
+    if (this._compiled) {
+      this._compiled.textContent = content;
+    }
   }
 }
