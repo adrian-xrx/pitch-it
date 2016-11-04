@@ -18,7 +18,7 @@
 'use strict';
 
 const Server = require('./Server');
-const Logger = require('../server/lib/Logger');
+const Logger = require('../shared/Logger');
 
 const pkg = require('../package.json');
 const fs = require('fs');
@@ -42,6 +42,7 @@ function launch(config) {
 
 console.log('\n-------------------------------------------------');
 console.log('  pitch it.');
+console.log('        Backend Server');
 console.log('    v' + pkg.version);
 console.log('-------------------------------------------------\n');
 let config;

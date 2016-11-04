@@ -18,34 +18,16 @@
 import FacadeElement from '../lib/FacadeElement';
 import ListItem from './ListItem';
 
-export default class List extends FacadeElement {
-  constructor(id, classes, listElements) {
-    super(id, ["list"].concat(classes), "");
-    if (listElements) {
-      this._children = this._convertToListItems(listElements);
-    }
-  }
-
-  _convertToListItems(items) {
-    return items.map((item) => {
-      return new ListItem(undefined, undefined, item);
-    });
-  }
-
-  update(listElements) {
-    this.clear();
-    this._children = this._convertToListItems(listElements);
-    this._renderChildren();
-  }
-
-  onChild(event, handler) {
-    this._children.forEach((child) => {
-      child.on(event, handler);
-    });
+export default class ParticipantListItem extends ListItem {
+  constructor(id, classes, listObject) {
+    super(id, ["participant-list-item"].concat(classes), listObject);
+    let labelBox = new FacadeElement(undefined, ["label-box"], this._listObject.label);
+    let profileImage = new FacadeElement(undefined, ["profile-image"], this._listObject.label.substring(0,2));
+    this._children = [labelBox, profileImage];
   }
 
   render() {
-    this._compiled = document.createElement('ul');
+    this._compiled = document.createElement('li');
     this._attachClasses(this._compiled);
     this._attachEvents(this._compiled);
     this._compiled.id = this._id;

@@ -14,41 +14,42 @@
  * be found in the LICENSE file in the root directory
  * 
  */
-'use strict';
+@import (reference) "./shadow.less";
+@import (reference) "./colors.less";
 
-class AuthorizationRegister {
-  static get TYPE() {
-    return 'user.register'
-  }
+.participant-list {
+  position: absolute;
+  top: 100px;
 
-  constructor(username, password) {
-    this._username = username;
-    this._password = password;
-  }
+  .participant-list-item.list-item {
+    display: flex;
 
-  static parse(msg) {
-    return new AuthorizationRegister(msg.username, msg.password);
-  }
+    position: absolute;
+    padding: 0;
+    width: 168px;
+    height: 50px;
+    line-height: 50px;
+    left: -118px;
+    transition: left 0.15s ease-out;
+    box-shadow: @small-shadow;
 
-  getUser() {
-    return this._username;
-  }
 
-  getPassword() {
-    return this._password;
-  }
+    &:hover {
+      left: 0;
+      background-color: @color-white;
+    }
 
-  serialize() {
-    JSON.stringify({
-      type: AuthorizationRegister.TYPE,
-      data: {
-        user: this.getUser(),
-        password: this.getPassword()
-      }
-    });
+    .profile-image {
+      width: 50px;
+      text-align: center;
+      background-color: @color-secondary;
+      color: @color-white;
+      font-size: 20px;
+    }
+
+    .label-box {
+      flex: 1;
+      padding: 0px 5px;
+    }
   }
 }
-
-module.exports = {
-  REGISTER: AuthorizationRegister
-};

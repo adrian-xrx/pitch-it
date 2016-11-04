@@ -18,7 +18,7 @@
 const AssetServer = require('./AssetServer');
 const pkg = require('../package.json');
 const fs = require('fs');
-const logger = require('./lib/Logger').getInstance();
+const Logger = require('../shared/Logger');
 
 function validateConfig(config) {
   let retVal = true;
@@ -37,7 +37,8 @@ function launch(config) {
 }
 
 console.log('\n-------------------------------------------------');
-console.log('  ' + pkg.name);
+console.log('  pitch it.');
+console.log('        Asset Server');
 console.log('    v' + pkg.version);
 console.log('-------------------------------------------------\n');
 let config;
@@ -50,7 +51,7 @@ if (process.argv[2]) {
 
 if (config) {
   if (config.logLevel) {
-    logger.setLevel(config.logLevel);
+    Logger.level = config.logLevel;
   }
   launch(config);
 } else {

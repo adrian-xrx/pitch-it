@@ -15,6 +15,17 @@
  * 
  */
 
-'use strict';
-const assert = require('assert');
-const TypeRTC = require('../../../server/shared/types/RTC');
+import List from './List';
+import ParticipantListItem from './ParticipantListItem';
+
+export default class ParticipantList extends List {
+  constructor(id, classes, listElements) {
+    super(id, ["participant-list"].concat(classes), listElements);
+  }
+
+  _convertToListItems(items) {
+    return items.map((item) => {
+      return new ParticipantListItem(undefined, undefined, item);
+    });
+  }
+}

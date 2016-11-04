@@ -93,7 +93,7 @@ export default class FacadeElement {
     });
   }
 
-    _renderChild(child) {
+  _renderChild(child) {
     if (child instanceof FacadeElement) {
       return child.render();
     } else {

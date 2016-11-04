@@ -16,15 +16,21 @@
  */
 
 import FacadeElement from '../lib/FacadeElement';
+import Button from './Button';
 
-export default class SideFrame extends FacadeElement {
-  constructor(id, classes, title, contentElements) {
-    super(id, ["side-frame"].concat(classes), "");
+export default class DialogFrame extends FacadeElement {
+  constructor(id, classes, title, contentElements, okCallback, cancelCallback) {
+    super(id, ["dialog-frame"].concat(classes), "");
     this._title = title || '';
+    this._okCallback = okCallback;
+    this._cancelCallback = cancelCallback;
+    this._okLabel = 'Ok';
+    this._cancelLabel = (cancelCallback) ? 'Cancel' : undefined;
     if (contentElements && contentElements.length > 0) {
       this.update(contentElements);      
     }
     this._children.unshift(this._generateTitleElm());
+    this._children = this._children.concat(this._generateFooterButtons());
     this._backdrop;
   }
 
@@ -32,14 +38,40 @@ export default class SideFrame extends FacadeElement {
     this._title = title;
   }
 
+  setOkLabel(okLabel) {
+    this._okLabel = okLabel;
+  }
+
+  setCancelLabel(cancelLabel) {
+    this._cancelLabel = cancelLabel;
+  }
+
   _generateTitleElm() {
-    return new FacadeElement(undefined, ["side-frame-title"], this._title);
+    return new FacadeElement(undefined, ["dialog-frame-title"], this._title);
+  }
+
+  _generateFooterButtons() {
+    let okButton = new Button(undefined, ["primary"], this._okLabel);
+    okButton.on('click', (evt) => {
+      this.hide();
+      this._okCallback(evt)
+    });
+    let footerButtons = [okButton];
+    if (this._cancelCallback) {
+      let cancelButton = new Button(undefined, undefined, this._cancelLabel);
+      cancelButton.on('click', (evt) => {
+        this.hide();
+        this._cancelCallback(evt)
+      });
+      footerButtons.push(cancelButton);
+    }
+    return footerButtons;
   }
 
   update(contentElements) {
     let title = this._generateTitleElm();
     this.clear();
-    this._children = [title].concat(contentElements);
+    this._children = [title].concat(contentElements, this._generateFooterButtons());
     this._renderChildren();
   }
 
@@ -47,10 +79,7 @@ export default class SideFrame extends FacadeElement {
     this.removeClass("hide");
     this.addClass("show");
     this._backdrop = document.createElement('div');
-    this._backdrop.classList.add('backdrop');
-    this._backdrop.addEventListener('click', () => {
-      this.hide();
-    })
+    this._backdrop.classList.add('dialog-backdrop');
     document.body.appendChild(this._backdrop);
   }
 

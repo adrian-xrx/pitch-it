@@ -27,14 +27,18 @@ export default class ClientSocket {
     this._disconnectedCallback = disconnected;
     let socketURL = (tlsEnabled ? 'wss' : 'ws') + '://' + host + ':' + port;
     this._socket = new WebSocket(socketURL);
-    this._socket.onopen = connected;
-    this._socket.onclose = disconnected;
+    this._socket.onopen = () => this._connected();
+    this._socket.onclose = () => this._disconnected();
     this._socket.onmessage = this._handleMessage.bind(this);
     this._callbacks = {};
   }
 
   _connected() {
     console.log('Connected');
+    let authCheck = new Message(Message.AUTH_CHECK, {});
+    if (location.hash !== 'login') {
+      this.send(authCheck);
+    }
     if (this._connectedCallback) {
       this._connectedCallback();
     }
@@ -49,6 +53,14 @@ export default class ClientSocket {
   
   _handleMessage(msg) {
     msg = Message.deserialize(msg.data);
+    if (msg.type === Message.ERROR) {
+      if (msg.data.code === 401) {
+        CookieApi.removeCookie('token');
+        location.hash = '';
+      } else {
+        console.error(msg.data.code, msg.data.reason);        
+      }
+    }
     if (this._callbacks[msg.type]) {
       this._callbacks[msg.type](msg);
     } else {

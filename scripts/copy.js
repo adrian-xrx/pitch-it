@@ -22,9 +22,9 @@ let toCopy = [
   './package.json',
   './README.md',
   './server/asset/index.html',
-  './server/lib',
-  './server/shared/types',
-  './server/run.js',
+  './shared',
+  './pitch-it',
+  './server/launch.js',
   './server/AssetServer.js'
 ];
 
@@ -51,14 +51,23 @@ function copyFile(source, target) {
 function copyDir(source, targetBase, target) {
   let pathList = fs.readdirSync(source);
   for (let i = 0; i < pathList.length; i++) {
-    copyFile(path.join(source, pathList[i]), path.join(targetBase, target, pathList[i]));
+    let sourcePath = path.join(source, pathList[i]);
+    if (isFilePath(sourcePath)) {
+      copyFile(sourcePath, path.join(targetBase, target, pathList[i]));
+    } else {
+      copyDir(sourcePath, path.join(targetBase, target), pathList[i]);
+    }
   }
+}
+
+function isFilePath(path) {
+  let copyStat = fs.statSync(path);
+  return copyStat.isFile();
 }
 
 for (let i = 0; i < toCopy.length; i++) {
   let copyPath = path.join(__dirname, '..', toCopy[i]);
-  let copyStat = fs.statSync(copyPath);
-  if (copyStat.isFile()) {
+  if (isFilePath(copyPath)) {
     copyFile(copyPath, path.join(targetPath, toCopy[i]));
   } else {
     copyDir(copyPath, targetPath, toCopy[i]);

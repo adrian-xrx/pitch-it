@@ -16,5 +16,24 @@
  */
 
 'use strict';
-const assert = require('assert');
-const TypeDraw = require('../../../server/shared/types/Draw');
+
+const Logger = require('../../shared/Logger');
+const Message = require('../../shared/Message');
+
+class Forwarder {
+  constructor() {
+  }
+
+  static forwardMessageTo(targetSocket, msg, originSocket) {
+    if (originSocket && targetSocket && msg) {
+      Logger.debug('Forward ' + msg.type + ' from ' + originSocket.user + ' to ' + targetSocket.user);
+      let forwardMessage = new Message(msg.type, msg.data);
+      forwardMessage.origin = originSocket.user;
+      targetSocket.send(forwardMessage.serialize());
+    } else {
+      Logger.error("Message counld not be forwarded, one of the parameters is undefined");
+    }
+  }
+}
+
+module.exports = Forwarder;

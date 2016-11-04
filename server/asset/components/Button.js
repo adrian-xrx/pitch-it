@@ -16,40 +16,31 @@
  */
 
 import FacadeElement from '../lib/FacadeElement';
-import ListItem from './ListItem';
 
-export default class List extends FacadeElement {
-  constructor(id, classes, listElements) {
-    super(id, ["list"].concat(classes), "");
-    if (listElements) {
-      this._children = this._convertToListItems(listElements);
+export default class Button extends FacadeElement {
+  constructor(id, classes=[], label) {
+    super(id, ['btn'].concat(classes), label);
+  }
+
+  update(label) {
+    this._content = label;
+    if (this._compiled) {
+      this._compiled.textContent = label;
+      this._compiled.title = label;
     }
   }
 
-  _convertToListItems(items) {
-    return items.map((item) => {
-      return new ListItem(undefined, undefined, item);
-    });
-  }
-
-  update(listElements) {
-    this.clear();
-    this._children = this._convertToListItems(listElements);
-    this._renderChildren();
-  }
-
-  onChild(event, handler) {
-    this._children.forEach((child) => {
-      child.on(event, handler);
-    });
-  }
-
   render() {
-    this._compiled = document.createElement('ul');
+    this._compiled = document.createElement('button');
     this._attachClasses(this._compiled);
     this._attachEvents(this._compiled);
-    this._compiled.id = this._id;
-    this._renderChildren();
+    if (this._id && this._id.length > 0) {
+      this._compiled.id = this._id;
+    }
+    if (this._content && this._compiled && this._content.length > 0) {
+      this._compiled.textContent = this._content;    
+      this._compiled.title = this._content;
+    }
     return this._compiled;
   }
 }

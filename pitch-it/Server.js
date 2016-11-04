@@ -19,10 +19,11 @@
 const http = require('http');
 const https = require('https');
 const WebSocketServer = require('ws').Server;
-const Logger = require('./lib/Logger');
+const Logger = require('../shared/Logger');
 const Message = require('../shared/Message');
 const Authenticator = require('./lib/Authenticator');
 const Users = require('./lib/Users');
+const Forwarder = require('./lib/Forwarder');
 
 class Server {
   constructor(config) {
@@ -60,6 +61,15 @@ class Server {
     });
   }
 
+  getSocketByUser(user) {
+    let socketCount = this._wss.clients.length;
+    for (let i = 0; i < socketCount; i++) {
+      if (this._wss.clients[i].user === user) {
+        return this._wss.clients[i];
+      }
+    }
+  }
+
   _broadcast(broadcastFunction) {
     this._wss.clients.forEach((client) => {
       broadcastFunction(client);
@@ -73,10 +83,12 @@ class Server {
       });
 
       ws.on('close', (msg) => {
+        if (ws.user) {
+          this._users.remove(ws.user);          
+        }
         Logger.info('Socket disconnected. Active connections: ' + wss.clients.length);
       });
 
-      this._broadcast((socket) => this._users.list(socket));
       Logger.info('New socket connected. Active connections: ' + wss.clients.length);
     });
   }
@@ -85,9 +97,34 @@ class Server {
     msg = Message.deserialize(msg);
     Logger.debug('Got Message ' + msg.type);
     switch(msg.type) {
+      case Message.AUTH_CHECK:
+        if (this._authenticator.isValid(socket, msg.token)) {
+          let user = msg.token.split('.')[1];
+          socket.user = user;
+          this._users.add(user);
+          this._broadcast((socket) => this._users.list(socket));
+        }
+        break;
       case Message.AUTH_REGISTER:
         this._authenticator.authenticate(socket, msg);
         this._broadcast((socket) => this._users.list(socket));
+        break;
+      case Message.CALL_OFFER:
+      case Message.CALL_ACCEPT:
+      case Message.CALL_REJECT:
+      case Message.RTC_OFFER:
+      case Message.RTC_ANSWER:
+      case Message.RTC_ICE_CANDIDATE:
+        if (this._authenticator.isValid(socket, msg.token)) {
+          let targetSocket = this.getSocketByUser(msg.data.target);
+          if (targetSocket) {
+            Forwarder.forwardMessageTo(targetSocket, msg, socket);
+          } else {
+            Logger.error("Target socket does not exist");
+            let err = new Message(Message.ERROR, {code: 404, reason: "Target does not exist"});
+            socket.send(err.serialize());
+          }
+        }
         break;
       default:
         Logger.info('Unkown message ' + msg.type);

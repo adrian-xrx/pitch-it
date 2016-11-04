@@ -18,7 +18,7 @@
 'use strict';
 
 const Message = require('../../shared/Message');
-const Logger = require('./Logger');
+const Logger = require('../../shared/Logger');
 
 class Users {
   constructor() {

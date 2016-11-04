@@ -18,6 +18,11 @@
 'use strict';
 
 class Message {
+
+  static get AUTH_CHECK() {
+    return 'auth.check';
+  }
+
   static get AUTH_REGISTER() {
     return 'auth.register';
   }
@@ -26,10 +31,47 @@ class Message {
     return 'user.list';
   }
 
+  static get CALL_OFFER() {
+    return 'call.offer';
+  }
+
+  static get CALL_ACCEPT() {
+    return 'call.accept';
+  }
+
+  static get CALL_REJECT() {
+    return 'call.reject';
+  }
+
+  static get RTC_OFFER() {
+    return 'rtc.offer';
+  }
+
+  static get RTC_ANSWER() {
+    return 'rtc.answer';
+  }
+
+  static get RTC_ICE_CANDIDATE() {
+    return 'rtc.ice.candidate';
+  }
+
+  static get ERROR() {
+    return 'error';
+  }
+
   constructor(type, data) {
     this._type = type;
     this._data = data;
     this._token;
+    this._origin;
+  }
+
+  get origin() {
+    return this._origin;
+  }
+
+  set origin(origin) {
+    this._origin = origin;
   }
 
   get type() {
@@ -50,14 +92,22 @@ class Message {
 
   static deserialize(raw) {
     let parsed = JSON.parse(raw);
-    return new Message(parsed.type, parsed.data);
+    let msg = new Message(parsed.type, parsed.data);
+    if (parsed.token) {
+      msg.token = parsed.token;
+    }
+    if (parsed.origin) {
+      msg.origin = parsed.origin;
+    }
+    return msg;
   }
 
   serialize() {
     return JSON.stringify({
       type: this._type,
       data: this._data,
-      token: this._token
+      token: this._token,
+      origin: this._origin
     });
   }
 }

@@ -21,7 +21,7 @@ const https = require('https');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const logger = require('./lib/Logger').getInstance();
+const Logger = require('../shared/Logger')
 
 class AssetServer {
   constructor(config) {
@@ -43,7 +43,7 @@ class AssetServer {
         };
         this._httpsServer.createServer(credentials);
       } catch (err) {
-        logger.error('Error occured while reading credentials ' + err);
+        Logger.error('Error occured while reading credentials ' + err);
         throw new Error("Error reading https certificate or key");
       }
       let httpApp = express();
@@ -62,11 +62,11 @@ class AssetServer {
 
   launch() {
     this._httpServer.listen(config.port, () => {
-      logger.debug('HTTP running on port ' + config.port);
+      Logger.debug('HTTP running on port ' + config.port);
     });
     if (config.https) {
       this._httpsServer.listen(config.https.port, () => {
-        logger.debug('HTTPS running on port ' + config.https.port);
+        Logger.debug('HTTPS running on port ' + config.https.port);
       });
     }
   }

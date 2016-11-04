@@ -16,16 +16,20 @@
  */
 
 import FacadeView from '../lib/FacadeView';
+import FacadeElement from '../lib/FacadeElement';
 import Logo from '../components/Logo';
 import UserMenu from '../components/UserMenu';
 import SideFrame from '../components/SideFrame';
+import DialogFrame from '../components/DialogFrame';
 import CookieApi from '../lib/CookieApi';
 import List from '../components/List';
+import ParticipantList from '../components/ParticipantList';
 
 export default class Main extends FacadeView {
-  constructor(domTarget, userApi) {
+  constructor(domTarget, userApi, callApi) {
     super(domTarget);
-    this._userApi =  userApi;
+    this._userApi = userApi;
+    this._callApi = callApi;
     this._root.addClass('main-view');
     super.appendChild(new Logo());
     let username = this._parseUsername();
@@ -34,6 +38,14 @@ export default class Main extends FacadeView {
     super.appendChild(this._userMenu);
     this._sideFrame = new SideFrame();
     super.appendChild(this._sideFrame);
+    this._dialogFrame = new DialogFrame(undefined, undefined, undefined, undefined, () => this._acceptCall(), () => this._rejectCall());
+    super.appendChild(this._dialogFrame);
+    this._participantList = new ParticipantList(undefined, undefined, this._convertParticipants());
+    super.appendChild(this._participantList);
+
+    callApi.offerCallback = (origin) => this._recievedOffer(origin);
+    callApi.activeCallback = () => this._activeCallback();
+    callApi.rejectCallback = () => this._offerRejected();
   }
 
   _parseUsername() {
@@ -44,6 +56,42 @@ export default class Main extends FacadeView {
   update() {
     let username = this._parseUsername();
     this._userMenu.update(username);
+  }
+
+  _recievedOffer(origin) {
+    this._dialogFrame.setTitle('Join');
+    this._dialogFrame.setOkLabel('Accept');
+    this._dialogFrame.setCancelLabel('Decline');
+    this._dialogFrame.update(new FacadeElement(undefined, undefined, `Do you what to join the whiteboard of ${origin}?`));
+    this._dialogFrame.show();
+  }
+
+  _acceptCall() {
+    this._callApi.acceptCall();
+    // add participant to display list
+  }
+
+  _activeCallback() {
+    let participants = this._convertParticipants().map((participant) => {
+      participant.state = 'active';
+      return participant;
+    });
+    this._participantList.update();
+  }
+
+  _convertParticipants() {
+    let participant = {
+      label: 'hello'
+    };
+    return [participant];
+  }
+
+  _offerRejected() {
+    this._participantList.clear();
+  }
+
+  _rejectCall() {
+    this._callApi.rejectCall();
   }
 
   _sideFrameUserList() {
@@ -59,6 +107,12 @@ export default class Main extends FacadeView {
   }
 
   _onUserAdd(origEvent, item) {
-    console.log(item);
+    this._sideFrame.hide();
+    this._callApi.offerCall(item.name);
+    let participants = this._convertParticipants().map((participant) => {
+      participant.state = 'pending';
+      return participant;
+    });
+    this._participantList.update(participants);
   }
 }

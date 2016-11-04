@@ -15,6 +15,47 @@
  * 
  */
 
-'use strict';
-const assert = require('assert');
-const TypeCall = require('../../../server/shared/types/Call');
+@import (reference) "./shadow.less";
+
+.dialog-frame {
+  @width: 450px;
+
+  text-align: center;
+  width: @width;
+  position: fixed;
+  left: calc(~"50% - " @width/2);
+  max-height: 500px;
+  top: 30%;
+  background-color: @color-white;
+  box-shadow: @basic-shadow;
+  padding: 20px 20px 20px 20px;
+  z-index: 4;
+  display: none;
+
+  &.hide {
+    display: none;
+  }
+
+  &.show {
+    display: block;
+  }
+
+  .dialog-frame-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    margin-top: 20px;
+  }
+}
+
+.dialog-backdrop {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: rgba(0, 0 ,0 ,0.3);
+}

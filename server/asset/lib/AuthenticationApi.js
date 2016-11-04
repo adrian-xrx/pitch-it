@@ -21,7 +21,6 @@ import CookieApi from './CookieApi';
 export default class AuthenticationApi {
   constructor(clientSocket) {
     this._clientSocket = clientSocket; 
-    
     this._clientSocket.on(Message.AUTH_REGISTER, (msg) => this.registerSuccess(msg));
   }
 

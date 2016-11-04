@@ -17,12 +17,22 @@
 
 'use strict';
 
+const Logger = require('../../shared/Logger');
 const Message = require('../../shared/Message');
 
 class Authenticator {
   constructor(users) {
     this._tokenCache = {};
     this._users = users;
+  }
+
+  cleanup() {
+    let toRemove = Object.keys(this._tokenCache).filter((token) => {
+      return this._tokenCache[token].expire < Date.now();
+    });
+    toRemove.forEach((token) => {
+      delete this._tokenCache[token];
+    });
   }
 
   generateToken(username) {
@@ -44,21 +54,26 @@ class Authenticator {
     };
     this._users.add(msg.data.username);
     let message = new Message(Message.AUTH_REGISTER, {token: token});
+    socket.user = msg.data.username;
     socket.send(message.serialize());
   }
 
   removeToken(token) {
+    let user = token.split('.')[1];
+    this._users.remove(user);
     delete this._tokenCache[token];
   }
 
-  isValid(token) {
+  isValid(socket, token) {
     let tokenData = this._tokenCache[token];
     if (tokenData && tokenData.expire >= Date.now()) {
       return true;
-    } else {
-      removeToken(token);
-      return false;
+    } else if (tokenData) {
+      this.removeToken(token);
     }
+    let err = new Message(Message.ERROR, {code: 401, reason: 'Not authorized'});
+    socket.send(err.serialize());
+    return false;
   }
 }
 

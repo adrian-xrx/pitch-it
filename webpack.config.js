@@ -28,14 +28,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
-    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
-      },
-      comments: /@preserve|@cc_on|\bMIT\b|\bMPL\b|\bGPL\b|\bBSD\b|\bISCL\b|\(c\)|License|Copyright/mi
+      }
     }),
     new webpack.BannerPlugin(license)
   ]
