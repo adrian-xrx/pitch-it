@@ -21,11 +21,11 @@ let targetPath = path.join(__dirname, '..', './dist');
 let toCopy = [
   './package.json',
   './README.md',
-  './server/asset/index.html',
+  './pitch-it-ui/asset/index.html',
   './shared',
   './pitch-it',
-  './server/launch.js',
-  './server/AssetServer.js'
+  './pitch-it-ui/launch.js',
+  './pitch-it-ui/AssetServer.js'
 ];
 
 function createPath(toCreate) {

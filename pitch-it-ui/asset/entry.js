@@ -27,38 +27,49 @@ import CallApi from './lib/CallApi';
 import DrawApi from './lib/DrawApi';
 import AuthenticationApi from './lib/AuthenticationApi';
 import ClientSocket from './lib/ClientSocket';
+import Rest from './lib/Rest';
 
-let clientSocket = new ClientSocket('localhost', 1234, null, null, false);
+let promise = Rest.exeGet('/config');
 
-let userApi = new UserApi(clientSocket);
-let authApi = new AuthenticationApi(clientSocket);
-let callApi = new CallApi(clientSocket);
-let drawApi = new DrawApi(clientSocket);
+promise.then((config) => {
+  console.log(config);
+  let clientSocket = new ClientSocket(config.socket.host, config.socket.port, null, null, config.tls);
 
-let login = new Login('#render-container', authApi);
+  let userApi = new UserApi(clientSocket);
+  let authApi = new AuthenticationApi(clientSocket);
+  let callApi = new CallApi(clientSocket, config);
+  let drawApi = new DrawApi(clientSocket);
 
-let main = new Main('#render-container', authApi, userApi, callApi, drawApi);
+  let login = new Login('#render-container', authApi);
 
-var router = new FacadeRouter({
-  "login": {
-    view: login,
-    onEnter: () => {
-      if (authApi.isAuthenticated()) {
-        location.hash = 'main';
+  let main = new Main('#render-container', authApi, userApi, callApi, drawApi);
+
+  var router = new FacadeRouter({
+    "login": {
+      view: login,
+      onEnter: () => {
+        if (authApi.isAuthenticated()) {
+          location.hash = 'main';
+        }
+      }
+    },
+    "main": {
+      view: main,
+      authentication: true
+    },
+    "default": {
+      onEnter: () => {
+        if (authApi.isAuthenticated()) {
+          location.hash = 'main';
+        } else {
+          location.hash = 'login';  
+        }
       }
     }
-  },
-  "main": {
-    view: main,
-    authentication: true
-  },
-  "default": {
-    onEnter: () => {
-      if (authApi.isAuthenticated()) {
-        location.hash = 'main';
-      } else {
-        location.hash = 'login';  
-      }
-    }
-  }
-}, authApi);
+  }, authApi);
+}, () => {
+  let fatalError = document.createElement('div');
+  fatalError.classList.add("error-fatal");
+  fatalError.textContent = 'Fatal Error - Please, contact your Administrator';
+  document.querySelector('#render-container').appendChild();
+});

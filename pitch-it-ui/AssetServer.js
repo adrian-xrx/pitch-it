@@ -25,23 +25,40 @@ const Logger = require('../shared/Logger')
 
 class AssetServer {
   constructor(config) {
+    this._config = config;
     let baseApp = express();
 
     let assetPath = path.join(__dirname + '/asset');
     baseApp.use(express.static(assetPath));
+    baseApp.get('/config', (req, res) => {
+      let baseClientConfig = {
+        "tls": this._config.client.tls,
+        "stun": this._config.client.stun,
+        "turn": this._config.client.turn
+      };
+      if (this._config.client.socket.length > 1) {
+        baseClientConfig.socket = this._config.client.socket[0];
+      } else {
+        // todo - distribute accross all backend servers
+        baseClientConfig.socket = this._config.client.socket[0];
+      }
+      res.json(baseClientConfig);
+    });
 
     this._httpServer = http.createServer();
     
-    if (config.https) {
+    if (this._config.https) {
       try {
+        let keyPath = path.normalize(this._config.https.key);
+        let certPath = path.normalize(this._config.https.certificate);
         let key = fs.readFileSync(keyPath).toString();
         let cert = fs.readFileSync(certPath).toString();
         let credentials = {
           key: key,
           cert: cert,
-          passphrase: passphrase || null
+          passphrase: this._config.https.passphrase || null
         };
-        this._httpsServer.createServer(credentials);
+        this._httpsServer = https.createServer(credentials);
       } catch (err) {
         Logger.error('Error occured while reading credentials ' + err);
         throw new Error("Error reading https certificate or key");
@@ -53,6 +70,7 @@ class AssetServer {
         createRedirectUrl += req.originalUrl;
         res.redirect(301, createRedirectUrl);
       });
+      
       this._httpServer.on('request', httpApp);
       this._httpsServer.on('request', baseApp);
     } else {
@@ -61,12 +79,12 @@ class AssetServer {
   }
 
   launch() {
-    this._httpServer.listen(config.port, () => {
-      Logger.debug('HTTP running on port ' + config.port);
+    this._httpServer.listen(this._config.port, () => {
+      Logger.info('HTTP running on port ' + this._config.port);
     });
-    if (config.https) {
-      this._httpsServer.listen(config.https.port, () => {
-        Logger.debug('HTTPS running on port ' + config.https.port);
+    if (this._config.https) {
+      this._httpsServer.listen(this._config.https.port, () => {
+        Logger.info('HTTPS running on port ' + this._config.https.port);
       });
     }
   }

@@ -7,9 +7,9 @@ var pkg = JSON.parse(pkgRaw);
 var license = fs.readFileSync('./LICENSE', 'utf8');
 
 module.exports = {
-  entry: './server/asset/entry.js',
+  entry: './pitch-it-ui/asset/entry.js',
   output: {
-    path: './dist/server/asset',
+    path: './dist/pitch-it-ui/asset',
     filename: pkg.name + '.js'
   },
   module: {

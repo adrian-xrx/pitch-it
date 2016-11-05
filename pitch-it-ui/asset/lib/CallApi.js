@@ -17,7 +17,6 @@
 
 'use strict';
 import Message from '../../../shared/Message';
-import config from '../config';
 
 export default class CallApi {
 
@@ -41,8 +40,9 @@ export default class CallApi {
     return 'pending';
   }
 
-  constructor(clientSocket) {
+  constructor(clientSocket, config) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+    this._config = config;
     this._socket = clientSocket;
     this._socket.on(Message.CALL_OFFER, (msg) => this._gotOffer(msg));
     this._socket.on(Message.CALL_REJECT, (msg) => this._gotRejection(msg));
@@ -93,11 +93,11 @@ export default class CallApi {
 
   _initRTCConnection() {
     let iceServers = [];
-    if (config.stun) {
-      iceServers = iceServers.concat(config.stun);
+    if (this._config.stun) {
+      iceServers = iceServers.concat(this._config.stun);
     }
-    if (config.turn) {
-      iceServers = iceServers.concat(config.turn);
+    if (this._config.turn) {
+      iceServers = iceServers.concat(this._config.turn);
     }
     this._connection = new CallApi.PEER_CONNECTION({
       iceServers: iceServers

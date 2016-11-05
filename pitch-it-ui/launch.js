@@ -22,7 +22,7 @@ const Logger = require('../shared/Logger');
 
 function validateConfig(config) {
   let retVal = true;
-  if (!config.port) {
+  if (!config.port && !config.client) {
     retVal = false;
   }
   return retVal;
@@ -31,7 +31,7 @@ function validateConfig(config) {
 function launch(config) {
   if (validateConfig(config.assetServer)) {
     let srv = new AssetServer(config.assetServer);
-    srv.launch;
+    srv.launch();
   } else {
     console.log('INVALID CONFIG\nEXIT');
   }

@@ -12,6 +12,6 @@ module.exports = {
   debug: true,
   devServer: {
     keepAlive: true,
-    contentBase: './dist/server/asset/'
+    contentBase: './dist/pitch-it-ui/asset/'
   }
 }

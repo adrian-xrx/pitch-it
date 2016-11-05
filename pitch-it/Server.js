@@ -18,6 +18,8 @@
 'use strict';
 const http = require('http');
 const https = require('https');
+const path = require('path');
+const fs = require('fs');
 const WebSocketServer = require('ws').Server;
 const Logger = require('../shared/Logger');
 const Message = require('../shared/Message');
@@ -28,17 +30,19 @@ const Forwarder = require('./lib/Forwarder');
 class Server {
   constructor(config) {
     this._server;
-    this._port = config.port;
+    this._port = (config.port);
     this._users = new Users();
     this._authenticator = new Authenticator(this._users);
     if (config.tls) {
       try {
+        let keyPath = path.normalize(config.tls.key);
+        let certPath = path.normalize(config.tls.certificate);
         let key = fs.readFileSync(keyPath).toString();
         let cert = fs.readFileSync(certPath).toString();
         let credentials = {
           key: key,
           cert: cert,
-          passphrase: passphrase || null
+          passphrase: config.tls.passphrase || null
         };
         this._server = https.createServer(credentials);
       } catch (err) {
