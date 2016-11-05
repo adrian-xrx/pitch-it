@@ -30,7 +30,8 @@ function validateConfig(config) {
 
 function launch(config) {
   if (validateConfig(config.assetServer)) {
-    new AssetServer(config.assetServer);
+    let srv = new AssetServer(config.assetServer);
+    srv.launch;
   } else {
     console.log('INVALID CONFIG\nEXIT');
   }

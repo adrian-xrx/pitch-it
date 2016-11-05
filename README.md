@@ -1,9 +1,9 @@
-pitch it
+pitch it.
 ========
-pitch it is comunication tool based on webrtc
+pitch it. is communication tool based on webrtc
 
 ## Prerequesits
-To run or build pitch it you need to have nodejs and npm installed.
+To run or build pitch it. you need to have nodejs and npm installed.
 ## Installation
 Recommended: Download a prebuild version from the release area  
 Unzip and navigate to the folder
@@ -11,22 +11,29 @@ Unzip and navigate to the folder
 $ npm install
 ```
 Will install all dependencies (build and runtime dependencies)
+You need to execute this for both the asset server and the pitch it. backend server
 ## Configuration
 ### Server
 Create a config.json file that can be passed as cmd arg
 ```javascript
 {
   "logLevel": [DEBUG|INFO|WARN|ERROR], // define one of the given log levels
-  "port": [http port],
-  "https": {
-    "port": [https port],
-    "certificate": "[cert]",
-    "key": "[key]",
-    "passphrase": "[passphase]" // optional
+  "assetServer": {
+    "port": [http port],
+    "https": {
+      "port": [https port],
+      "certificate": "[cert]",
+      "key": "[key]",
+      "passphrase": "[passphase]" // optional
+    }
+  }
+  "server": {
+    "port": [http port]
   }
 }
 ```
-If you don't specify the https property. The server will run without HTTPS-Encryption
+If you don't specify the https property. The server will run without HTTPS-Encryption. 
+you can use one config for both the asset server and the pitch it. backend server using the "assetServer" and "server" property
 ### Client
 Change the config.js in server/asset/config.js to use your servers.
 ```javascript
@@ -51,7 +58,7 @@ turn: [] // array of turn configurations
 ```
 $ npm start [config file]
 ```
-Will run the server. The config file is the configuration for the server
+Will run the server depending in which directory you are. The config file is the configuration for the server
 
 ## Development
 
