@@ -97,6 +97,9 @@ class Server {
     msg = Message.deserialize(msg);
     Logger.debug('Got Message ' + msg.type);
     switch(msg.type) {
+      case Message.AUTH_LOGOUT:
+        this._authenticator.removeToken(msg.token);
+        break;
       case Message.AUTH_CHECK:
         if (this._authenticator.isValid(socket, msg.token)) {
           let user = msg.token.split('.')[1];

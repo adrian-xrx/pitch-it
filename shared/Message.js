@@ -19,6 +19,10 @@
 
 class Message {
 
+  static get AUTH_LOGOUT() {
+    return 'auth.logout';
+  }
+
   static get AUTH_CHECK() {
     return 'auth.check';
   }

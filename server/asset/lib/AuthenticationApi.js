@@ -40,7 +40,7 @@ export default class AuthenticationApi {
   }
 
   logout() {
-    let msg = new Message(Message.LOGOUT, {});
+    let msg = new Message(Message.AUTH_LOGOUT, {});
     this._clientSocket.send(msg);
     CookieApi.removeCookie('token');
     location.hash = 'login';
