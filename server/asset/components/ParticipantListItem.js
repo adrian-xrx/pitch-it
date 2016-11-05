@@ -22,7 +22,12 @@ export default class ParticipantListItem extends ListItem {
   constructor(id, classes, listObject) {
     super(id, ["participant-list-item"].concat(classes), listObject);
     let labelBox = new FacadeElement(undefined, ["label-box"], this._listObject.label);
-    let profileImage = new FacadeElement(undefined, ["profile-image"], this._listObject.label.substring(0,2));
+    let profileImage;
+    if (listObject.state === 'active') {
+      profileImage = new FacadeElement(undefined, ["profile-image"], this._listObject.label.substring(0,2));
+    } else {
+      profileImage = new FacadeElement(undefined, ["loading"], '', 'connecting');
+    }
     this._children = [labelBox, profileImage];
   }
 

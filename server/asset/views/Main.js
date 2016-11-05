@@ -40,7 +40,7 @@ export default class Main extends FacadeView {
     super.appendChild(this._sideFrame);
     this._dialogFrame = new DialogFrame(undefined, undefined, undefined, undefined, () => this._acceptCall(), () => this._rejectCall());
     super.appendChild(this._dialogFrame);
-    this._participantList = new ParticipantList(undefined, undefined, this._convertParticipants());
+    this._participantList = new ParticipantList(undefined, undefined, []);
     super.appendChild(this._participantList);
 
     callApi.offerCallback = (origin) => this._recievedOffer(origin);
@@ -68,7 +68,11 @@ export default class Main extends FacadeView {
 
   _acceptCall() {
     this._callApi.acceptCall();
-    // add participant to display list
+    let participants = this._convertParticipants().map((participant) => {
+      participant.state = 'pending';
+      return participant;
+    });
+    this._participantList.update(participants);
   }
 
   _activeCallback() {
@@ -76,7 +80,7 @@ export default class Main extends FacadeView {
       participant.state = 'active';
       return participant;
     });
-    this._participantList.update();
+    this._participantList.update(participants);
   }
 
   _convertParticipants() {

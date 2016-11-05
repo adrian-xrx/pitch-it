@@ -121,8 +121,9 @@ export default class CallApi {
 
   _gotRejection(msg) {
     this._pendingParticipant = undefined;
-    console.log(this._participant, this._pendingParticipant);
-    console.log(rejected, msg);
+    if(this._rejectCallback) {
+      this._rejectCallback();
+    }
   }
 
   hangupCall() { 
@@ -200,8 +201,8 @@ export default class CallApi {
     let stream = window.URL.createObjectURL(obj.stream);
     this._audioStream = new Audio(stream);
     this._audioStream.play();
-    if (this.activeCallback) {
-      this.activeCallback();
+    if (this._activeCallback) {
+      this._activeCallback();
     }
   }
 }

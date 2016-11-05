@@ -17,10 +17,11 @@
 
 export default class FacadeElement {
 
-  constructor(id, classes, content) {
+  constructor(id, classes, content, tooltip) {
     this._id = id || '';
     this._classes = classes || [];
     this._content = content || '';
+    this._tooltip = tooltip || '';
     this._children = [];
     this._events = {};
     this._compiled = undefined;
@@ -76,6 +77,21 @@ export default class FacadeElement {
     return this._content;
   }
 
+  update(content, tooltip) {
+    if (content) {
+      this._content = content;
+      if (this._compiled) {
+        this._compiled.textContent = this._content;
+      }
+    }
+    if (tooltip) {
+      this._tooltip = tooltip;
+      if (this._compiled) {
+        this._compiled.title = this._tooltip;
+      }
+    }
+  }
+
   _attachClasses(elm) {
     this._classes.forEach((className) => {
       if (className) {
@@ -116,6 +132,9 @@ export default class FacadeElement {
     }
     if (this._content && this._compiled && this._content.length > 0) {
       this._compiled.textContent = this._content;      
+    }
+    if (this._tooltip && this._compiled && this._tooltip.length > 0) {
+      this._compiled.title = this._tooltip;
     }
     this._renderChildren();
     return this._compiled;
