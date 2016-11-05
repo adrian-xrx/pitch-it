@@ -24,12 +24,15 @@ import DialogFrame from '../components/DialogFrame';
 import CookieApi from '../lib/CookieApi';
 import List from '../components/List';
 import ParticipantList from '../components/ParticipantList';
+import Whiteboard from '../components/Whiteboard';
 
 export default class Main extends FacadeView {
   constructor(domTarget, authApi, userApi, callApi) {
     super(domTarget);
     this._userApi = userApi;
     this._callApi = callApi;
+    this._whitebaord = new Whiteboard(undefined, undefined);
+    super.appendChild(this._whitebaord);
     this._root.addClass('main-view');
     super.appendChild(new Logo());
     let username = this._parseUsername();
@@ -63,6 +66,7 @@ export default class Main extends FacadeView {
     let username = this._parseUsername();
     this._userMenu.update(username);
     this._sideFrame.reset();
+    this._whitebaord.clear();
   }
 
   _recievedOffer(origin) {

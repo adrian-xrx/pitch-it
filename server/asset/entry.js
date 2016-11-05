@@ -48,9 +48,6 @@ var router = new FacadeRouter({
   },
   "main": {
     view: main,
-    onEnter: () => {
-      main.update();
-    },
     authentication: true
   },
   "default": {
