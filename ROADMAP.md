@@ -1,8 +1,8 @@
 # Short Term 
-  - Add HTTPS support
   - Testautomation
-  - Hang-up
+  - Hang up functionality
+  - Whiteboard sync after joining
   
 # Long Term
-  - Enhance whiteboard
   - Usermanagement
+  - Enhance whiteboard capabilites
