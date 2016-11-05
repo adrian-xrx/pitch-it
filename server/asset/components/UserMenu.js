@@ -16,16 +16,26 @@
  */
 
 import FacadeElement from '../lib/FacadeElement';
+import List from './List';
 
 export default class UserMenu extends FacadeElement {
-  constructor(id, classes, content) {
-    super(id, ["user-menu"].concat(classes), content);
+  constructor(id, classes, content, menuEntries) {
+    super(id, ["user-menu"].concat(classes), '');
+    this._username = new FacadeElement(undefined, ['label'], this._content);
+    this._username.on('click', () => {
+      if (this._menuEntries.hasClass('active')) {
+        this._menuEntries.removeClass('active');
+      } else {
+        this._menuEntries.addClass('active');
+      }
+    });
+    super.appendChild(this._username);
+    this._menuEntries = new List(undefined, undefined, menuEntries);
+    this._menuEntries.on('click', () => this._menuEntries.removeClass('active'));
+    super.appendChild(this._menuEntries);
   }
 
   update(content) {
-    this._content = content;
-    if (this._compiled) {
-      this._compiled.textContent = content;
-    }
+    this._username.update(content);
   }
 }

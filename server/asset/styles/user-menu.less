@@ -16,12 +16,30 @@
  */
 
 @import (reference) "./colors.less";
+@import (reference) "./shadow.less";
 
 .user-menu {
-  font-size: 17px;
-  padding: 5px 10px;
-  &:hover {
-    background-color: @color-light-grey;
-    cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .label {
+    font-size: 17px;
+    padding: 5px 10px;
+    &:hover {
+      background-color: @color-light-grey;
+      cursor: pointer;
+    }
+  }
+  .list {
+    width: 150px;
+    right: 0px;
+    position: absolute;
+    display: none;
+    box-shadow: @small-shadow;
+    &.active {
+      display: block;
+    }
   }
 }

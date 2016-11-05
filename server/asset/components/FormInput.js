@@ -21,10 +21,13 @@ export default class FormInput extends FacadeElement {
   constructor(id, classes=[], label, value) {
     super(id, ['form-input'].concat(classes), value);
     this._label = label;
-    this._compiled = document.createElement('input');
-    this._compiled.id = this._id;
-    this._compiled.name =this._id;
-    this._compiled.value = this._content;
+  }
+
+  update(content) {
+    this._content = content;
+    if (this._compiled) {
+      this._compiled.value = '';
+    }
   }
 
   getValue() {
@@ -32,6 +35,10 @@ export default class FormInput extends FacadeElement {
   }
 
   render() {
+    this._compiled = document.createElement('input');
+    this._compiled.id = this._id;
+    this._compiled.name =this._id;
+    this._compiled.value = this._content;
     let elm = document.createElement('div');
     this._attachClasses(elm);
     this._attachEvents(elm);

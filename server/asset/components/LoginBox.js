@@ -24,14 +24,18 @@ export default class LoginBox extends FacadeElement {
   constructor() {
     super(undefined, ['login-box']);
     this.appendChild(new Logo());
-    let formInput = new FormInput('username', undefined, 'login');
-    formInput.on('keyup', (event) => {
+    this._formInput = new FormInput('username', undefined, 'login');
+    this._formInput .on('keyup', (event) => {
       switch(event.keyCode) {
         case FacadeKeys.ENTER:
-          this._login(formInput.getValue(), event);
+          this._login(this._formInput .getValue(), event);
       }
     });
-    this.appendChild(formInput);
+    this.appendChild(this._formInput);
+  }
+
+  update(content) {
+    this._formInput.update(content);
   }
 
   _login(username, event) {

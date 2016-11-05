@@ -21,6 +21,7 @@ export default class ListItem extends FacadeElement {
   constructor(id, classes, listObject) {
     super(id, ["list-item"].concat(classes), "");
     this._listObject = listObject;
+    this.on('click', this._listObject.action);
   }
 
   _attachEvents(elm) {

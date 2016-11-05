@@ -54,6 +54,10 @@ export default class FacadeElement {
     }
   }
 
+  hasClass(className) {
+    return (this._classes.indexOf(className) !== -1);
+  }
+
   on(event, handle) {
     if (event && !this._events[event]) {
       this._events[event] = handle;

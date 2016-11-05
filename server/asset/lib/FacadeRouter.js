@@ -36,6 +36,9 @@ export default class FacadeRouter {
     if (!route.authentication || this._authApi.isAuthenticated()) {
       if (route.view) {
         if (route.view instanceof FacadeView) {
+          if (route.view.init) {
+            route.view.init();
+          }
           route.view.render();
         } else {
           throw new Error('View is not a FacadeView');

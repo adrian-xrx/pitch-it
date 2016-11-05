@@ -38,12 +38,6 @@ export default class List extends FacadeElement {
     this._renderChildren();
   }
 
-  onChild(event, handler) {
-    this._children.forEach((child) => {
-      child.on(event, handler);
-    });
-  }
-
   render() {
     this._compiled = document.createElement('ul');
     this._attachClasses(this._compiled);

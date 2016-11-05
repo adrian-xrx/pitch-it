@@ -35,7 +35,7 @@ let callApi = new CallApi(clientSocket);
 
 let login = new Login('#render-container', authApi);
 
-let main = new Main('#render-container', userApi, callApi);
+let main = new Main('#render-container', authApi, userApi, callApi);
 
 var router = new FacadeRouter({
   "login": {
@@ -48,6 +48,9 @@ var router = new FacadeRouter({
   },
   "main": {
     view: main,
+    onEnter: () => {
+      main.update();
+    },
     authentication: true
   },
   "default": {
@@ -55,7 +58,7 @@ var router = new FacadeRouter({
       if (authApi.isAuthenticated()) {
         location.hash = 'main';
       } else {
-        location.hash = 'login';        
+        location.hash = 'login';  
       }
     }
   }

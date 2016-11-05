@@ -26,15 +26,21 @@ import List from '../components/List';
 import ParticipantList from '../components/ParticipantList';
 
 export default class Main extends FacadeView {
-  constructor(domTarget, userApi, callApi) {
+  constructor(domTarget, authApi, userApi, callApi) {
     super(domTarget);
     this._userApi = userApi;
     this._callApi = callApi;
     this._root.addClass('main-view');
     super.appendChild(new Logo());
     let username = this._parseUsername();
-    this._userMenu = new UserMenu(undefined, undefined, username);
-    this._userMenu.on('click', this._sideFrameUserList.bind(this));
+    let menuEntries = [{
+      label: 'Add Participant',
+      action: () => this._sideFrameUserList()
+    }, {
+      label: 'Logout',
+      action: () => authApi.logout()
+    }];
+    this._userMenu = new UserMenu(undefined, undefined, username, menuEntries);
     super.appendChild(this._userMenu);
     this._sideFrame = new SideFrame();
     super.appendChild(this._sideFrame);
@@ -53,9 +59,10 @@ export default class Main extends FacadeView {
     return (token) ? token.split('.')[1] : "";
   }
 
-  update() {
+  init() {
     let username = this._parseUsername();
     this._userMenu.update(username);
+    this._sideFrame.reset();
   }
 
   _recievedOffer(origin) {
@@ -101,10 +108,12 @@ export default class Main extends FacadeView {
   _sideFrameUserList() {
     let userListItems = this._userApi.list().map((user) => {
       user.label = user.name;
+      user.action = (evt, item) => {
+        this._onUserAdd(evt, item);
+      };
       return user;
     });
     let userList = new List(undefined, undefined, userListItems);
-    userList.onChild('click', this._onUserAdd.bind(this));
     this._sideFrame.setTitle('Users');
     this._sideFrame.update([userList]);
     this._sideFrame.show();

@@ -39,7 +39,15 @@ export default class AuthenticationApi {
     location.hash = 'main';
   }
 
+  logout() {
+    let msg = new Message(Message.LOGOUT, {});
+    this._clientSocket.send(msg);
+    CookieApi.removeCookie('token');
+    location.hash = 'login';
+    console.log('Logout');
+  }
+
   isAuthenticated() {
-    return typeof CookieApi.getValue('token') !== 'undefined'
+    return typeof CookieApi.getValue('token') !== 'undefined';
   }
 }

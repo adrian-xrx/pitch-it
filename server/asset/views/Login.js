@@ -29,6 +29,10 @@ export default class Login extends FacadeView {
     super.appendChild(this._loginBox);
   }
 
+  init() {
+    this._loginBox.update('');
+  }
+
   authenticate(username) {
     if (username) {
       this._authApi.register(username);

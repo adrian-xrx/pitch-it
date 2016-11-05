@@ -28,6 +28,12 @@ export default class SideFrame extends FacadeElement {
     this._backdrop;
   }
 
+  reset() {
+    this.removeClass('hide');
+    this.removeClass('show');
+    this.clear();
+  }
+
   setTitle(title) {
     this._title = title;
   }
