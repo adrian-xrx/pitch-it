@@ -119,6 +119,7 @@ class Server {
       case Message.RTC_ANSWER:
       case Message.RTC_ICE_CANDIDATE:
       case Message.DRAW_PATH:
+      case Message.DRAW_CLEAR:
         if (this._authenticator.isValid(socket, msg.token)) {
           let targetSocket = this.getSocketByUser(msg.data.target);
           if (targetSocket) {

@@ -21,8 +21,6 @@ const Logger = require('../../shared/Logger');
 const Message = require('../../shared/Message');
 
 class Forwarder {
-  constructor() {
-  }
 
   static forwardMessageTo(targetSocket, msg, originSocket) {
     if (originSocket && targetSocket && msg) {

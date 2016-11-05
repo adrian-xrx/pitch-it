@@ -99,8 +99,8 @@ export default class Whiteboard extends FacadeElement {
   }
 
   clear() {
-    // todo - check why this breaks draw capabilities
-    /*
+    this._activeShape = undefined;
+    this._remoteShape = undefined;
     if (this._compiled) {
       let firstChild = this._compiled.firstChild;
       while(firstChild) {
@@ -108,7 +108,6 @@ export default class Whiteboard extends FacadeElement {
         firstChild = this._compiled.firstChild;
       }
     }
-    */
   }
 
   drawRemote(x, y, close) {

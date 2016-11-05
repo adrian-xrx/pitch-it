@@ -21,6 +21,7 @@ export default class DrawApi {
   constructor(socket) {
     this._socket = socket;
     this._socket.on(Message.DRAW_PATH, (msg) => this._remoteDraw(msg));
+    this._socket.on(Message.DRAW_CLEAR, () => this._remoteClear());
   }
 
   static get CLOSE() {
@@ -35,15 +36,29 @@ export default class DrawApi {
     this._remoteDrawCallback = callback;
   }
 
+  set remoteClearCallback(callback) {
+    this._remoteClearCallback = callback;
+  }
+
   _remoteDraw(msg) {
     if(this._remoteDrawCallback) {
       this._remoteDrawCallback(msg.data.position.x, msg.data.position.y, msg.data.close);
     }
   }
 
+  _remoteClear() {
+    if (this._remoteClearCallback) {
+      this._remoteClearCallback();
+    }
+  }
+
   sendPathData(target, x, y, closeType) {
-    console.log(target, x,y, closeType);
     let msg = new Message(Message.DRAW_PATH,{position: {x:x, y:y}, close: closeType, target: target});
+    this._socket.send(msg);
+  }
+
+  sendClear(target) {
+    let msg = new Message(Message.DRAW_CLEAR, {target: target});
     this._socket.send(msg);
   }
 }

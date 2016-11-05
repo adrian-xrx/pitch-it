@@ -63,6 +63,10 @@ class Message {
     return 'draw.path';
   }
 
+  static get DRAW_CLEAR() {
+    return 'draw.clear';
+  }
+
   static get ERROR() {
     return 'error';
   }

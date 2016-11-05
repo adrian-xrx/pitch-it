@@ -42,6 +42,9 @@ export default class Main extends FacadeView {
       label: 'Add Participant',
       action: () => this._sideFrameUserList()
     }, {
+      label: 'Clear Whiteboard',
+      action: () => this._clearWhiteboard()
+    }, {
       label: 'Logout',
       action: () => authApi.logout()
     }];
@@ -59,6 +62,7 @@ export default class Main extends FacadeView {
     this._callApi.rejectCallback = () => this._offerRejected();
 
     this._drawApi.remoteDrawCallback = (x, y, close) => this._whiteboard.drawRemote(x, y, close);
+    this._drawApi.remoteClearCallback = () => this._whiteboard.clear();
   }
 
   _parseUsername() {
@@ -112,6 +116,13 @@ export default class Main extends FacadeView {
     this._callApi.getParticipants().forEach((participant) => {
       this._drawApi.sendPathData(participant.name, x, y, closeType);
     });
+  }
+
+  _clearWhiteboard() {
+    this._callApi.getParticipants().forEach((participant) => {
+      this._drawApi.sendClear(participant.name);
+    });
+    this._whiteboard.clear();
   }
 
   _sideFrameUserList() {
