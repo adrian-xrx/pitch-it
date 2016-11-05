@@ -59,6 +59,10 @@ class Message {
     return 'rtc.ice.candidate';
   }
 
+  static get DRAW_PATH() {
+    return 'draw.path';
+  }
+
   static get ERROR() {
     return 'error';
   }

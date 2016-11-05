@@ -24,6 +24,7 @@ import Main from './views/Main';
 import FacadeElement from './lib/FacadeElement';
 import UserApi from './lib/UserApi';
 import CallApi from './lib/CallApi';
+import DrawApi from './lib/DrawApi';
 import AuthenticationApi from './lib/AuthenticationApi';
 import ClientSocket from './lib/ClientSocket';
 
@@ -32,10 +33,11 @@ let clientSocket = new ClientSocket('localhost', 1234, null, null, false);
 let userApi = new UserApi(clientSocket);
 let authApi = new AuthenticationApi(clientSocket);
 let callApi = new CallApi(clientSocket);
+let drawApi = new DrawApi(clientSocket);
 
 let login = new Login('#render-container', authApi);
 
-let main = new Main('#render-container', authApi, userApi, callApi);
+let main = new Main('#render-container', authApi, userApi, callApi, drawApi);
 
 var router = new FacadeRouter({
   "login": {

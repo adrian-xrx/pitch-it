@@ -27,12 +27,14 @@ import ParticipantList from '../components/ParticipantList';
 import Whiteboard from '../components/Whiteboard';
 
 export default class Main extends FacadeView {
-  constructor(domTarget, authApi, userApi, callApi) {
+  constructor(domTarget, authApi, userApi, callApi, drawApi) {
     super(domTarget);
     this._userApi = userApi;
     this._callApi = callApi;
-    this._whitebaord = new Whiteboard(undefined, undefined);
-    super.appendChild(this._whitebaord);
+    this._drawApi = drawApi;
+    this._whiteboard = new Whiteboard(undefined, undefined);
+    this._whiteboard.drawCallback = (x, y, close) => this._forwardDrawData(x, y, close);
+    super.appendChild(this._whiteboard);
     this._root.addClass('main-view');
     super.appendChild(new Logo());
     let username = this._parseUsername();
@@ -52,9 +54,11 @@ export default class Main extends FacadeView {
     this._participantList = new ParticipantList(undefined, undefined, []);
     super.appendChild(this._participantList);
 
-    callApi.offerCallback = (origin) => this._recievedOffer(origin);
-    callApi.activeCallback = () => this._activeCallback();
-    callApi.rejectCallback = () => this._offerRejected();
+    this._callApi.offerCallback = (origin) => this._recievedOffer(origin);
+    this._callApi.activeCallback = () => this._activeCallback();
+    this._callApi.rejectCallback = () => this._offerRejected();
+
+    this._drawApi.remoteDrawCallback = (x, y, close) => this._whiteboard.drawRemote(x, y, close);
   }
 
   _parseUsername() {
@@ -66,7 +70,7 @@ export default class Main extends FacadeView {
     let username = this._parseUsername();
     this._userMenu.update(username);
     this._sideFrame.reset();
-    this._whitebaord.clear();
+    this._whiteboard.clear();
   }
 
   _recievedOffer(origin) {
@@ -79,26 +83,21 @@ export default class Main extends FacadeView {
 
   _acceptCall() {
     this._callApi.acceptCall();
-    let participants = this._convertParticipants().map((participant) => {
-      participant.state = 'pending';
-      return participant;
-    });
+    let participants = this._convertParticipants();
     this._participantList.update(participants);
   }
 
   _activeCallback() {
-    let participants = this._convertParticipants().map((participant) => {
-      participant.state = 'active';
-      return participant;
-    });
+    let participants = this._convertParticipants();
     this._participantList.update(participants);
   }
 
   _convertParticipants() {
-    let participant = {
-      label: 'hello'
-    };
-    return [participant];
+    let participants = this._callApi.getParticipants().map((participant) => {
+      participant.label = participant.name;
+      return participant;
+    });
+    return participants;
   }
 
   _offerRejected() {
@@ -107,6 +106,12 @@ export default class Main extends FacadeView {
 
   _rejectCall() {
     this._callApi.rejectCall();
+  }
+  
+  _forwardDrawData(x, y, closeType) {
+    this._callApi.getParticipants().forEach((participant) => {
+      this._drawApi.sendPathData(participant.name, x, y, closeType);
+    });
   }
 
   _sideFrameUserList() {
@@ -126,10 +131,7 @@ export default class Main extends FacadeView {
   _onUserAdd(origEvent, item) {
     this._sideFrame.hide();
     this._callApi.offerCall(item.name);
-    let participants = this._convertParticipants().map((participant) => {
-      participant.state = 'pending';
-      return participant;
-    });
+    let participants = this._convertParticipants();
     this._participantList.update(participants);
   }
 }

@@ -16,6 +16,7 @@
  */
 
 import FacadeElement from '../lib/FacadeElement';
+import DrawApi from '../lib/DrawApi';
 
 export default class Whiteboard extends FacadeElement {
 
@@ -27,19 +28,20 @@ export default class Whiteboard extends FacadeElement {
     this._activeShape = undefined;
   }
 
+  set drawCallback(callback) {
+    this._onDrawing = callback;
+  }
+
   _onClick(evt) {
     let path = "";
     if (this._activeShape) {
-      let currentPath = this._activeShape.getAttributeNS(null, "d");
-      let path = `${currentPath} L ${evt.pageX},${evt.pageY}`;
-      this._activeShape.setAttributeNS(null, "d", path);
+      this._updatePath(this._activeShape, evt.pageX, evt.pageY);
     } else {
-      this._activeShape = document.createElementNS("http://www.w3.org/2000/svg","path");
-      path = `M ${evt.pageX},${evt.pageY}`;
-      this._activeShape.setAttributeNS(null, "d", path);
-      this._activeShape.style.stroke = '#000';
-      this._activeShape.style.fill = 'none';
+      this._activeShape = this._generatePath(evt.pageX, evt.pageY);
       this._compiled.appendChild(this._activeShape);
+    }
+    if (this._onDrawing) {
+      this._onDrawing(evt.pageX, evt.pageY);
     }
   }
 
@@ -61,15 +63,39 @@ export default class Whiteboard extends FacadeElement {
   _onRightClick(evt) {
     if (this._activeShape) {
       let currentPath = this._activeShape.getAttributeNS(null, "d");
+      let closeType = DrawApi.KEEEP;
       if (!evt.ctrlKey) {
         let path = `${currentPath} Z`;
+        closeType = DrawApi.CLOSE;
         this._activeShape.setAttributeNS(null, "d", path);
       }
       this._activeShape = undefined;
+      if (this._onDrawing) {
+        let lastPosition = currentPath.lastIndexOf(" ");
+        let position = currentPath.substring(lastPosition, currentPath.length).trim();
+        position = position.split(',');
+        this._onDrawing(position[0], position[1], closeType);
+      }
     }
     evt.preventDefault();
     evt.stopPropagation();
     return false;
+  }
+
+  _generatePath(x, y, color) {
+    let pathShape = document.createElementNS("http://www.w3.org/2000/svg","path");
+    let path = `M ${x},${y}`;
+    pathShape.setAttributeNS(null, "d", path);
+    pathShape.style.stroke = color || '#000';
+    pathShape.style.fill = 'none';
+    return pathShape;
+  }
+
+  _updatePath(pathElement, x, y) {
+    let currentPath = pathElement.getAttributeNS(null, "d");
+    let path = `${currentPath} L ${x},${y}`;
+    pathElement.setAttributeNS(null, "d", path);
+    return pathElement;
   }
 
   clear() {
@@ -85,12 +111,23 @@ export default class Whiteboard extends FacadeElement {
     */
   }
 
-  onDrawing(handler) {
-
-  }
-
-  update(newPaths) {
-    console.log(newPaths);
+  drawRemote(x, y, close) {
+    if (this._remoteShape) {
+      if (!close) {
+        this._updatePath(this._remoteShape, x, y);
+      } else {
+        this._updatePath(this._remoteShape, x, y);
+        if(close === DrawApi.CLOSE) {
+          let currentPath = this._remoteShape.getAttributeNS(null, "d");
+          let path = `${currentPath} Z`;
+          this._remoteShape.setAttributeNS(null, "d", path);
+        }
+        this._remoteShape = undefined;
+      }
+    } else {
+      this._remoteShape = this._generatePath(x, y, '#777');
+      this._compiled.appendChild(this._remoteShape);
+    }
   }
 
   render() {

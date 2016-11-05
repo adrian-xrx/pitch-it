@@ -33,6 +33,14 @@ export default class CallApi {
     return window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
   }
 
+  static get ACTIVE() {
+    return 'active';
+  }
+
+  static get PENDING() {
+    return 'pending';
+  }
+
   constructor(clientSocket) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
     this._socket = clientSocket;
@@ -64,6 +72,23 @@ export default class CallApi {
 
   set hangupCallback(hangupCallback) {
     this._hangupCalblack = hangupCallback;
+  }
+
+  getParticipants() {
+    let participants = [];
+    if (this._participant) {
+      participants.push({
+        name: this._participant,
+        state: CallApi.ACTIVE
+      });
+    }
+    if (this._pendingParticipant) {
+      participants.push({
+        name: this._pendingParticipant,
+        state: CallApi.PENDING
+      });
+    }
+    return participants;
   }
 
   _initRTCConnection() {
