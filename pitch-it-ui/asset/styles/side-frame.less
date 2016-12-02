@@ -1,0 +1,71 @@
+/**
+ *    Copyright 2016, the creators of pitch-it
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * be found in the LICENSE file in the root directory
+ * 
+ */
+
+@import (reference) "./shadow.less";
+
+@keyframes slidein {
+  0%   {right: -500px}
+  90%  {right: -10px}
+  100% {right: -20px}
+}
+
+@keyframes slideout {
+  0%   {right: -20px}
+  10%  {right: -10px}
+  100% {right: -500px}
+}
+
+.side-frame {
+  @anim-duration: 0.2s;
+
+  height: 100%;
+  width: 450px;
+  right: -500px;
+  position: fixed;
+  top: 0;
+  background-color: @color-white;
+  box-shadow: @basic-shadow;
+  padding: 20px 40px 20px 20px;
+  z-index: 2;
+
+  &.hide {
+    animation-name: slideout;
+    animation-duration: @anim-duration;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+
+  &.show {
+    animation-name: slidein;
+    animation-duration: @anim-duration;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  .side-frame-title {
+    font-size: 20px;
+  }
+}
+
+.backdrop {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

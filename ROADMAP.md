@@ -1,10 +1,8 @@
 # Short Term 
-  - Add HTTPS support
   - Testautomation
-  - Hang-up
-  - Clear draw area
-  - Split asset and backend server
+  - Hang up functionality
+  - Whiteboard sync after joining
   
 # Long Term
-  - Upload pictures
-  - Scaling
+  - Usermanagement
+  - Enhance whiteboard capabilites

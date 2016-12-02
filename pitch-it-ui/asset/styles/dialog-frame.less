@@ -1,0 +1,61 @@
+/**
+ *    Copyright 2016, the creators of pitch-it
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * be found in the LICENSE file in the root directory
+ * 
+ */
+
+@import (reference) "./shadow.less";
+
+.dialog-frame {
+  @width: 450px;
+
+  text-align: center;
+  width: @width;
+  position: fixed;
+  left: calc(~"50% - " @width/2);
+  max-height: 500px;
+  top: 30%;
+  background-color: @color-white;
+  box-shadow: @basic-shadow;
+  padding: 20px 20px 20px 20px;
+  z-index: 4;
+  display: none;
+
+  &.hide {
+    display: none;
+  }
+
+  &.show {
+    display: block;
+  }
+
+  .dialog-frame-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    margin-top: 20px;
+  }
+}
+
+.dialog-backdrop {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: rgba(0, 0 ,0 ,0.3);
+}
